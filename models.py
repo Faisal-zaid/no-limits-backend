@@ -29,7 +29,7 @@ class Product(Base):# stores the services or products under a category
 
     category=relationship("Category", back_populates="products")
 
-    fields=relationship(
+    field=relationship(
         "ProductField",
         back_populates="product",
         cascade="all, delete-orphan"
@@ -49,7 +49,7 @@ class ProductField(Base):#stores the custom field created by admin for each prod
 
     options=relationship(
         "ProductFieldOption",
-        back_populates="fields",
+        back_populates="field",
         cascade="all, delete-orphan"
     )    
 

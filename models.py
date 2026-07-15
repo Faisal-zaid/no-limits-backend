@@ -19,7 +19,7 @@ class Category(Base):# stores the main service categories that the business offe
 class Product(Base):# stores the services or products under a category
     __tablename__="products"  
 
-    id=Column(Integer,Primary_key=True, index=True)
+    id=Column(Integer,primary_key=True, index=True)
     category_id=Column(Integer, ForeignKey("categories.id"))
 
     name=Column(Text, nullable=False)

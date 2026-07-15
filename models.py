@@ -70,7 +70,7 @@ class Order(Base): #stores sinformation about a customers order
     customer_phone=Column(String)
     status=Column(String, default="Pending")
     total_price=Column(Integer)
-    created_at=Column(DateTime)
+    created_at=Column(DateTime, default=datetime.now())
 
     items=relationship(
         "OrderItem",

@@ -98,7 +98,7 @@ class OrderItemFieldValue(Base): # customers answer to each custom field that wa
     __tablename__="order_item_field_values"
 
     id=Column(Integer, primary_key=True)
-    order_item_id=Column(Integer, ForeignKey("order_item.id"))
+    order_item_id=Column(Integer, ForeignKey("order_items.id"))
     product_field_id=Column(Integer, ForeignKey("product_fields.id"))
     value=Column(Text)
     order_item=relationship("OrderItem", back_populates="values")

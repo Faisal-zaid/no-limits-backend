@@ -57,7 +57,7 @@ class ProductFieldOption(Base):#some field types will be dropdowns so here is wh
     __tablename__="product_field_options"
 
     id=Column(Integer, primary_key=True)
-    field_id=Column(Integer, ForeignKey("product_fields_id"))
+    field_id=Column(Integer, ForeignKey("product_fields.id"))
     value=Column(String, nullable=False)
     field=relationship("ProductField", back_populates="options") 
 

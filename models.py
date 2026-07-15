@@ -1,6 +1,6 @@
 #import necessary packages
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column,Integer,Text,DateTime,String,relationship,ForeignKey,Boolean
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column,Integer,Text,DateTime,String,ForeignKey,Boolean
 
 #set up base class where models will inherit from
 Base=declarative_base()

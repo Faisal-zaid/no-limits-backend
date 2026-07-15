@@ -29,7 +29,7 @@ class Product(Base):# stores the services or products under a category
 
     category=relationship("Category", back_populates="products")
 
-    field=relationship(
+    fields=relationship(
         "ProductField",
         back_populates="product",
         cascade="all, delete-orphan"

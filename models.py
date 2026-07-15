@@ -93,3 +93,13 @@ class OrderItem(Base):
         back_populates="order_item",
         cascade="all, delete-orphan"
     )    
+
+class OrderItemFieldValue(Base):
+    __tablename__="order_item_field_values"
+
+    id=Column(Integer, primary_key=True)
+    order_item_id=Column(Integer, ForeignKey("order_item.id"))
+    product_field_id=Column(Integer, ForeignKey("product_fields.id"))
+    value=Column(Text)
+    order_item=relationship("OrderItem", back_populates="values")
+    product_field=relationship("ProductField")    

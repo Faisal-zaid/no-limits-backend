@@ -6,7 +6,7 @@ from sqlalchemy import Column,Integer,Text,DateTime
 Base=declarative_base()
 
 #begining of modelling the clases
-class Category(Base):
+class Category(Base):# stores the main service categories that the business offers
     __tablename__="categories"
 
     id=Column(Integer, primary_key=True, index=True)
@@ -16,7 +16,7 @@ class Category(Base):
 
     products=relationship("Product", back_populates="category")
 
-class Product(Base):
+class Product(Base):# stores the services or products under a category
     __tablename__="products"  
 
     id=Column(Integer,Primary_key=True, index=True)
@@ -35,7 +35,7 @@ class Product(Base):
         cascade="all, delete-orphan"
     )
 
-class ProductField(Base):
+class ProductField(Base):#stores the custom field created by admin for each product
     __tablename__="product_fields"
 
     id=Column(Integer, primary_key=True, index=True)
@@ -53,7 +53,7 @@ class ProductField(Base):
         cascade="all, delete-orphan"
     )    
 
-class ProductFieldOption(Base):
+class ProductFieldOption(Base):#some field types will be dropdowns so here is where the custom options of drop downs are stored
     __tablename__="product_field_options"
 
     id=Column(Integer, primary_key=True)
@@ -61,7 +61,7 @@ class ProductFieldOption(Base):
     value=Column(String, nullable=False)
     field=relationship("ProductField", back_populates="options") 
 
-class Order(Base):
+class Order(Base): #stores sinformation about a customers order
     __tablename__="orders"       
 
     id=Column(Integer, primary_key=True)
@@ -78,7 +78,7 @@ class Order(Base):
         cascade="all, delete-orphan"
     )
 
-class OrderItem(Base):
+class OrderItem(Base): #stores each product inside an order, e.g an order can have 3 products
     __tablename__="order_items"
 
     id=Column(Integer, primary_key=True)
@@ -94,7 +94,7 @@ class OrderItem(Base):
         cascade="all, delete-orphan"
     )    
 
-class OrderItemFieldValue(Base):
+class OrderItemFieldValue(Base): # customers answer to each custom field that was provided
     __tablename__="order_item_field_values"
 
     id=Column(Integer, primary_key=True)

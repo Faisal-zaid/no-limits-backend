@@ -39,7 +39,7 @@ class ProductField(Base):#stores the custom field created by admin for each prod
     __tablename__="product_fields"
 
     id=Column(Integer, primary_key=True, index=True)
-    product_id=Column(Integer, ForeignKey("Products.id"))
+    product_id=Column(Integer, ForeignKey("products.id"))
     label=Column(String, nullable=False)
     field_type=Column(String, nullable=False)
     required=Column(Boolean, default=False)
@@ -83,7 +83,7 @@ class OrderItem(Base): #stores each product inside an order, e.g an order can ha
 
     id=Column(Integer, primary_key=True)
     order_id=Column(Integer, ForeignKey("Orders.id"))
-    product_id=Column(Integer, ForeignKey("Products.id"))
+    product_id=Column(Integer, ForeignKey("products.id"))
     quantity=Column(Integer)
     order=relationship("Order", back_populates="items")
     product=relationship("Product")

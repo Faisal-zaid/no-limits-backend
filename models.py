@@ -52,3 +52,11 @@ class ProductField(Base):
         back_populates="fields",
         cascade="all, delete-orphan"
     )    
+
+class ProductFieldOption(Base):
+    __tablename__="product_field_options"
+
+    id=Column(Integer, primary_key=True)
+    field_id=Column(Integer, ForeignKey("product_fields_id"))
+    value=Column(String, nullable=False)
+    field=relationship("ProductField", back_populates="options")    

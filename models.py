@@ -59,4 +59,21 @@ class ProductFieldOption(Base):
     id=Column(Integer, primary_key=True)
     field_id=Column(Integer, ForeignKey("product_fields_id"))
     value=Column(String, nullable=False)
-    field=relationship("ProductField", back_populates="options")    
+    field=relationship("ProductField", back_populates="options") 
+
+class Order(Base):
+    __tablename__="orders"       
+
+    id=Column(Integer, primary_key=True)
+    customer_name=Column(String)
+    customer_email=Column(String)
+    customer_phone=Column(String)
+    status=Column(String, default="Pending")
+    total_price=Column(Integer)
+    created_at=Column(DateTime)
+
+    items=relationship(
+        "OrderItem",
+        back_populates="order",
+        cascade="all, delete-orphan"
+    )

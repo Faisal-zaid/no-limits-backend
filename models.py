@@ -34,3 +34,21 @@ class Product(Base):
         back_populates="product",
         cascade="all, delete-orphan"
     )
+
+class ProductField(Base):
+    __tablename__="product_fields"
+
+    id=Column(Integer, primary_key=True, index=True)
+    product_id=Column(Integer, ForeignKey("Products.id"))
+    label=Column(String, nullable=False)
+    field_type=Column(String, nullable=False)
+    required=Column(Boolean, default=False)
+    placeholder=Column(String)
+    
+    product=relationship("Product",back_populates="fields")
+
+    options=relationship(
+        "ProductFieldOption",
+        back_populates="fields",
+        cascade="all, delete-orphan"
+    )    

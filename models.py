@@ -45,7 +45,7 @@ class ProductField(Base):#stores the custom field created by admin for each prod
     required=Column(Boolean, default=False)
     placeholder=Column(String)
     
-    product=relationship("Product",back_populates="fields")
+    product=relationship("Product",back_populates="field")
 
     options=relationship(
         "ProductFieldOption",

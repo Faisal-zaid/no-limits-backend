@@ -54,9 +54,9 @@ def get_categories(session=Depends(get_db)):
 
 #retrieve a single category
 @app.get("/category/{category_id}")#never forget the parameters inside
-def get_category(category_id):
-    category=db.query(Category).filter(db==category_id).first()
-    return{"id":category_id}
+def get_category(category_id, session=Depends(get_db)):
+    category=session.query(Category).filter(Category.id==category_id).first()
+    return{"category":category_id}
 
 #update a single category
 @app.patch("/category/{category_id}")

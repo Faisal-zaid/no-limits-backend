@@ -21,8 +21,23 @@ class CategorySchema(BaseModel):
 @app.post("/category")
 def create_category(genre:CategorySchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
+    #now the actual code to create records
+    existing=session.query(Category).filter(Category.name==category.name).first()
+    
+    if existing is None:
 
+        new_category=Category(name=category.name) #creates the instance of the category class
+    
+    #adds the instance to the transaction
+        session.add(new_category)
+
+    #then commits the transaction
+        session.commit()
+    
     return{"message":"Category created successfully"}
+
+    else:
+        return {"message":"category already exists"}
 
 #retrieve all categories
 @app.get("/category")

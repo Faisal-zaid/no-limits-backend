@@ -65,7 +65,7 @@ def update_category(category_id):
 
 #delete a single category
 @app.delete("/category/{category_id}")
-def delete_category(category_id):
+def delete_category(category_id,session=Depends(get_db)):
     category = session.query(Category).filter(Category.id == category_id).first()
 
     session.delete(category)

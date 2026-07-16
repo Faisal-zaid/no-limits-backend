@@ -25,7 +25,8 @@ def get_categories():
 #retrieve a single category
 @app.get("/category/{category_id}")
 def get_category(category_id):
-    return{}
+    category=db.query(Category).filter(db==category_id).first()
+    return{"id":"category_id"}
 
 #update a single category
 @app.patch("/category/{category_id}")

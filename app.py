@@ -26,3 +26,8 @@ def get_categories():
 @app.get("/category/{category_id}")
 def get_category():
     return{}
+
+#update a single category
+@app.patch("/category/{category_id}")
+def update_category():
+    return{}

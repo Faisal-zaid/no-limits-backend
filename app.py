@@ -31,3 +31,8 @@ def get_category():
 @app.patch("/category/{category_id}")
 def update_category():
     return{}
+
+#delete a single category
+@app.delete("?category/{category_id}")
+def delete_category():
+    return {}    

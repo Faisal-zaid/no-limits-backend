@@ -24,15 +24,15 @@ def get_categories():
 
 #retrieve a single category
 @app.get("/category/{category_id}")
-def get_category():
+def get_category(category_id):
     return{}
 
 #update a single category
 @app.patch("/category/{category_id}")
-def update_category():
+def update_category(category_id):
     return{}
 
 #delete a single category
 @app.delete("?category/{category_id}")
-def delete_category():
+def delete_category(category_id):
     return {}    

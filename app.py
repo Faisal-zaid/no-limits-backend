@@ -10,6 +10,9 @@ from fastapi.middleware.Cors import CORSMiddleware
 #create an instance
 app=FastAPI()
 
+#allow access from all servers
+app.add_middleware(CORSMiddleware,  allow_origins=["*"])
+
 #create routes and access resources 
 @app.get("/")
 def read_root():

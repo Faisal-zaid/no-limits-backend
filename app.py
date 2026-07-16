@@ -11,7 +11,7 @@ from fastapi.middleware.Cors import CORSMiddleware
 app=FastAPI()
 
 #allow access from all servers
-app.add_middleware(CORSMiddleware,  allow_origins=["*"])
+app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_methods=["*"])
 
 #create routes and access resources 
 @app.get("/")

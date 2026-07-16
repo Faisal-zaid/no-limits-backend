@@ -66,4 +66,9 @@ def update_category(category_id):
 #delete a single category
 @app.delete("/category/{category_id}")
 def delete_category(category_id):
-    return {}    
+    category = session.query(Category).filter(Category.id == category_id).first()
+
+    session.delete(category)
+    session.commit()
+
+    return {"message": "Category deleted successfully"}   

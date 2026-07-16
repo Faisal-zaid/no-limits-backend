@@ -3,6 +3,13 @@ from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import Column,Integer,Text,DateTime,String,ForeignKey,Boolean,create_engine
 from datetime import datetime
 
+#create an engine responsible for converting sql to python and vice versa
+
+engine=create_engine("sqlite:///nolimits.db", echo=True)   # adding the echo is true lets you know if the database is working
+
+
+
+
 #set up base class where models will inherit from
 Base=declarative_base()
 

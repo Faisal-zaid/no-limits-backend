@@ -19,7 +19,7 @@ class CategorySchema(BaseModel):
     name:str
 #create a single category 
 @app.post("/category")
-def create_category():
+def create_category(genre:CategorySchema):
     #this is where i will come to use sqlalchemy to create records
 
     return{"message":"Category created successfully"}

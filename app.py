@@ -15,3 +15,11 @@ def create_category():
     #this is where i will come to use sqlalchemy to create records
 
     return{"message":"Category created successfully"}
+
+#retrieve all categories
+@app.get("/category")
+def get_category():
+    #here i will use sqlalchemy to retrieve all categories
+    return[]
+
+    

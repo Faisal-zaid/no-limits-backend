@@ -1,6 +1,8 @@
 #import fastapi class
 from fastapi import FastAPI
+#imports the classes from models
 from models import get_db,Category, Product, ProductField, ProductFieldOption, Order, OrderItem, OrderItemFieldValue 
+
 
 #create an instance
 app=FastAPI()

@@ -43,7 +43,9 @@ def create_category(genre:CategorySchema, session=Depends(get_db)):
 @app.get("/category")
 def get_categories():
     #here i will use sqlalchemy to retrieve all categories
-    return[]
+    #code to retrive categories
+    categories=session.query(Category).all()
+    return categories
 
 #retrieve a single category
 @app.get("/category/{category_id}")#never forget the parameters inside

@@ -5,7 +5,7 @@ from models import get_db,Category, Product, ProductField, ProductFieldOption, O
 #we need to do data validation using pydantic
 from pydantic import BaseModel
 #this import allows enabling of CORS
-from fastapi.middleware.Cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 #create an instance
 app=FastAPI()
@@ -24,7 +24,7 @@ class CategorySchema(BaseModel):
     name:str
 #create a single category 
 @app.post("/category")
-def create_category(genre:CategorySchema, session=Depends(get_db)):
+def create_category(category:CategorySchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
     existing=session.query(Category).filter(Category.name==category.name).first()
@@ -39,7 +39,7 @@ def create_category(genre:CategorySchema, session=Depends(get_db)):
     #then commits the transaction
         session.commit()
     
-    return{"message":"Category created successfully"}
+        return{"message":"Category created successfully"}
 
     else:
         return {"message":"category already exists"}

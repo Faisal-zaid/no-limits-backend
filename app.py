@@ -60,7 +60,7 @@ def get_category(category_id, session=Depends(get_db)):
 
 #update a single category
 @app.patch("/category/{category_id}")
-def update_category(category_id):
+def update_category(category_id, session=Depends(get_db)):
     return{}
 
 #delete a single category

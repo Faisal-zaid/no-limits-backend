@@ -13,6 +13,10 @@ app=FastAPI()
 def read_root():
     return{"Hello":"world!"}
 
+
+#for validation of category i will do 
+class CategorySchema(BaseModel):
+    name:str
 #create a single category 
 @app.post("/category")
 def create_category():

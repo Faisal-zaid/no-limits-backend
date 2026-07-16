@@ -1,5 +1,5 @@
 #import necessary packages
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import Column,Integer,Text,DateTime,String,ForeignKey,Boolean,create_engine
 from datetime import datetime
 

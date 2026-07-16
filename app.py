@@ -18,8 +18,11 @@ def create_category():
 
 #retrieve all categories
 @app.get("/category")
-def get_category():
+def get_categories():
     #here i will use sqlalchemy to retrieve all categories
     return[]
 
-    
+#retrieve a single category
+@app.get("/category/{category_id}")
+def get_category():
+    return{}

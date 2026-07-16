@@ -2,7 +2,8 @@
 from fastapi import FastAPI
 #imports the classes from models
 from models import get_db,Category, Product, ProductField, ProductFieldOption, Order, OrderItem, OrderItemFieldValue 
-
+#we need to do data validation using pydantic
+from pydantic import BaseModel
 
 #create an instance
 app=FastAPI()

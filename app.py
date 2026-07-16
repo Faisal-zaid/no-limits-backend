@@ -64,6 +64,6 @@ def update_category(category_id):
     return{}
 
 #delete a single category
-@app.delete("?category/{category_id}")
+@app.delete("category/{category_id}")
 def delete_category(category_id):
     return {}    

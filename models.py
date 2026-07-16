@@ -7,8 +7,9 @@ from datetime import datetime
 
 engine=create_engine("sqlite:///nolimits.db", echo=True)   # adding the echo is true lets you know if the database is working
 
+#now creating session which allows us to interface with db
 
-
+Session=sessionmaker(bind=engine)
 
 #set up base class where models will inherit from
 Base=declarative_base()

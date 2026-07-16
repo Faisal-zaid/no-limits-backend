@@ -23,7 +23,7 @@ def get_categories():
     return[]
 
 #retrieve a single category
-@app.get("/category/{category_id}")
+@app.get("/category/{category_id}")#never forget the parameters inside
 def get_category(category_id):
     category=db.query(Category).filter(db==category_id).first()
     return{"id":"category_id"}

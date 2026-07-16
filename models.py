@@ -11,6 +11,14 @@ engine=create_engine("sqlite:///nolimits.db", echo=True)   # adding the echo is 
 
 Session=sessionmaker(bind=engine)
 
+#in fastapi we need a method that returns the session which is here below
+def get_db():
+    session=Session()
+    try:
+        yield session
+    finally:
+        session.close()    
+
 #set up base class where models will inherit from
 Base=declarative_base()
 

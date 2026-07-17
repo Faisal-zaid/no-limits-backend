@@ -7,7 +7,7 @@ router=APIRouter()
 class CategorySchema(BaseModel):
     name:str
 #create a single category 
-@app.post("/category")
+@router.post("/category")
 def create_category(category:CategorySchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
@@ -29,7 +29,7 @@ def create_category(category:CategorySchema, session=Depends(get_db)):
         return {"message":"category already exists"}
 
 #retrieve all categories
-@app.get("/category")
+@router.get("/category")
 def get_categories(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all categories
     #code to retrive categories
@@ -37,13 +37,13 @@ def get_categories(session=Depends(get_db)):
     return categories
 
 #retrieve a single category
-@app.get("/category/{category_id}")#never forget the parameters inside
+@router.get("/category/{category_id}")#never forget the parameters inside
 def get_category(category_id, session=Depends(get_db)):
     category=session.query(Category).filter(Category.id==category_id).first()
     return category
 
 #update a single category
-@app.patch("/category/{category_id}")
+@router.patch("/category/{category_id}")
 def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
     category=session.query(Category).filter(Category.id==category_id).first()
 
@@ -68,7 +68,7 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
     return{"message":"category updated successfully"}      
 
 #delete a single category
-@app.delete("/category/{category_id}")
+@router.delete("/category/{category_id}")
 def delete_category(category_id,session=Depends(get_db)):
     category = session.query(Category).filter(Category.id == category_id).first()
 

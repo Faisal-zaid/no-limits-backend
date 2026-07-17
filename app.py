@@ -77,8 +77,11 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
             Category.name==data.name
         if data.description is not None:
             Category.description==data.description
-            
-                
+
+        session.commit()  
+        session.refresh(category)
+
+        return{"message":"category updated successfully"}      
 
 #delete a single category
 @app.delete("/category/{category_id}")

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends #the APIRouter allows us to use routes easily than relying everything in app.py
 from models import Category, get_db
 
 router=APIRouter()

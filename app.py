@@ -65,6 +65,13 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
 
     if not Category:
         return{"message":"Category not found"}
+    
+    #check to prevent duplicate values
+    if data.name:
+        exists=session.query(Category).filter(Category.name==data.name ,Category.id!=category_id).first()
+
+        if  exists:
+            return {"message":"name used by another category"}
 
 #delete a single category
 @app.delete("/category/{category_id}")

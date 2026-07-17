@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends
+from models import Category, get_db
 
+router=APIRouter()
 
 #for validation of category i will do 
 class CategorySchema(BaseModel):

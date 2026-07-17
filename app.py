@@ -72,6 +72,13 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
 
         if  exists:
             return {"message":"name used by another category"}
+        
+        if data.name:
+            Category.name==data.name
+        if data.description is not None:
+            Category.description==data.description
+            
+                
 
 #delete a single category
 @app.delete("/category/{category_id}")

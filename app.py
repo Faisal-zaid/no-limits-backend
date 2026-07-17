@@ -12,6 +12,9 @@ from routes.Category import router as category_router
 #create an instance
 app=FastAPI()
 
+#acts as blueprint for the route
+app.include_router(category_router)
+
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_methods=["*"])
 

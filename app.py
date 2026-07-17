@@ -60,8 +60,11 @@ def get_category(category_id, session=Depends(get_db)):
 
 #update a single category
 @app.patch("/category/{category_id}")
-def update_category(category_id, session=Depends(get_db)):
-    return{}
+def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
+    category=session.query(Category).filter(Category.id==category_id).first()
+
+    if not Category:
+        return{"message":"Category not found"}
 
 #delete a single category
 @app.delete("/category/{category_id}")

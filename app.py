@@ -66,22 +66,22 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
     if not Category:
         return{"message":"Category not found"}
     
-    #check to prevent duplicate values
-    if data.name:
-        exists=session.query(Category).filter(Category.name==data.name ,Category.id!=category_id).first()
+    # #check to prevent duplicate values
+    # if data.name:
+    #     exists=session.query(Category).filter(Category.name==data.name ,Category.id!=category_id).first()
 
-        if  exists:
-            return {"message":"name used by another category"}
+    #     if  exists:
+    #         return {"message":"name used by another category"}
         
-        if data.name:
-            Category.name==data.name
-        if data.description is not None:
-            Category.description==data.description
+    #     if data.name:
+    category.name=data.name
+        # if data.description is not None:
+        #     Category.description==data.description
 
-        session.commit()  
-        session.refresh(category)
+    session.commit()  
+    session.refresh(category)
 
-        return{"message":"category updated successfully"}      
+    return{"message":"category updated successfully"}      
 
 #delete a single category
 @app.delete("/category/{category_id}")

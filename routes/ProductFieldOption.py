@@ -4,11 +4,11 @@ from pydantic import BaseModel
 
 router=APIRouter()
 
-#for validation of category i will do 
+#for validation of product field option i will do 
 class ProductFieldOptionSchema(BaseModel):
     value:str
     
-#create a single category 
+#create a single product-field-option
 @router.post("/productfieldoption")
 def create_productfieldoption(productfieldoption:ProductFieldOptionSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records

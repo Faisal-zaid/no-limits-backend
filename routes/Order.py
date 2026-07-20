@@ -33,13 +33,13 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
     else:
         return {"message":"order already exists"}
 
-#retrieve all products
-@router.get("/product")
-def get_products(session=Depends(get_db)):
+#retrieve all orders
+@router.get("/orders")
+def get_orders(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive categories
-    products=session.query(Product).all()
-    return products
+    orders=session.query(Order).all()
+    return orders
 
 #retrieve a single product
 @router.get("/product/{product_id}")#never forget the parameters inside

@@ -33,12 +33,12 @@ def create_productfield(productfield:ProductFieldSchema, session=Depends(get_db)
         return {"message":"Product field already exists"}
 
 #retrieve all categories
-@router.get("/product")
-def get_products(session=Depends(get_db)):
+@router.get("/productfield")
+def get_productsfield(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
-    #code to retrive categories
-    products=session.query(Product).all()
-    return products
+    #code to retrive productfields
+    productsfield=session.query(ProductField).all()
+    return productsfield
 
 #retrieve a single product
 @router.get("/product/{product_id}")#never forget the parameters inside

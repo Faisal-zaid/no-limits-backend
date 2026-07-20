@@ -70,11 +70,11 @@ def update_productfieldoption(productfieldoption_id, data:ProductFieldOptionSche
     return{"message":"product-field-option updated successfully"}      
 
 #delete a single product
-@router.delete("/productfield/{productfield_id}")
-def delete_productfield(productfield_id,session=Depends(get_db)):
-    productfield = session.query(ProductField).filter(ProductField.id == productfield_id).first()
+@router.delete("/productfieldoption/{productfieldoption_id}")
+def delete_productfieldoption(productfieldoption_id,session=Depends(get_db)):
+    productfieldoption = session.query(ProductFieldOption).filter(ProductFieldOption.id == productfieldoption_id).first()
 
-    session.delete(productfield)
+    session.delete(productfieldoption)
     session.commit()
 
-    return {"message": "Product field deleted successfully"}   
+    return {"message": "Product-field-option deleted successfully"}   

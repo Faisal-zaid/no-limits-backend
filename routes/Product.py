@@ -4,11 +4,11 @@ from pydantic import BaseModel
 
 router=APIRouter()
 
-#for validation of category i will do 
+#for validation of product i will do 
 class ProductSchema(BaseModel):
     name:str
     base_price:int
-#create a single category 
+#create a single product 
 @router.post("/product")
 def create_product(product:ProductSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
@@ -30,7 +30,7 @@ def create_product(product:ProductSchema, session=Depends(get_db)):
     else:
         return {"message":"Product already exists"}
 
-#retrieve all categories
+#retrieve all products
 @router.get("/product")
 def get_products(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
@@ -44,13 +44,13 @@ def get_product(product_id, session=Depends(get_db)):
     product=session.query(Product).filter(Product.id==product_id).first()
     return product
 
-#update a single category
+#update a single product
 @router.patch("/product/{product_id}")
 def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
     product=session.query(Product).filter(Product.id==product_id).first()
 
     if not Product:
-        return{"message":"Category not found"}
+        return{"message":"Product not found"}
     
     # #check to prevent duplicate values
     # if data.name:

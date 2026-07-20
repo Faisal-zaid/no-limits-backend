@@ -5,9 +5,11 @@ from pydantic import BaseModel
 router=APIRouter()
 
 #for validation of category i will do 
-class ProductSchema(BaseModel):
-    name:str
-    base_price:int
+class ProductFieldSchema(BaseModel):
+    label:str
+    field_type:str
+    required:bool
+    placeholder:str
 #create a single category 
 @router.post("/product")
 def create_product(product:ProductSchema, session=Depends(get_db)):

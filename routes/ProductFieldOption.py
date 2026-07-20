@@ -1,15 +1,13 @@
 from fastapi import APIRouter, Depends #the APIRouter allows us to use routes easily than relying everything in app.py
-from models import ProductField, get_db
+from models import ProductFieldOption, get_db
 from pydantic import BaseModel
 
 router=APIRouter()
 
 #for validation of category i will do 
-class ProductFieldSchema(BaseModel):
-    label:str
-    field_type:str
-    required:bool
-    placeholder:str
+class ProductFieldOptionSchema(BaseModel):
+    value:str
+    
 #create a single category 
 @router.post("/productfield")
 def create_productfield(productfield:ProductFieldSchema, session=Depends(get_db)):

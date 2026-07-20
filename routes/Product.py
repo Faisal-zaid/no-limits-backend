@@ -69,12 +69,12 @@ def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
 
     return{"message":"product updated successfully"}      
 
-#delete a single category
-@router.delete("/category/{category_id}")
-def delete_category(category_id,session=Depends(get_db)):
-    category = session.query(Category).filter(Category.id == category_id).first()
+#delete a single product
+@router.delete("/product/{product_id}")
+def delete_product(product_id,session=Depends(get_db)):
+    product = session.query(Product).filter(product.id == product_id).first()
 
-    session.delete(category)
+    session.delete(product)
     session.commit()
 
-    return {"message": "Category deleted successfully"}   
+    return {"message": "Product deleted successfully"}   

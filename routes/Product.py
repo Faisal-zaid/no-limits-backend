@@ -7,6 +7,7 @@ router=APIRouter()
 #for validation of product i will do 
 class ProductSchema(BaseModel):
     name:str
+    category_id:int
     base_price:int
 #create a single product 
 @router.post("/product")

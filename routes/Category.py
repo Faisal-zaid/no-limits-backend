@@ -7,6 +7,8 @@ router=APIRouter()
 #for validation of category i will do 
 class CategorySchema(BaseModel):
     name:str
+    description:str
+    image:str
 #create a single category 
 @router.post("/category")
 def create_category(category:CategorySchema, session=Depends(get_db)):
@@ -16,7 +18,9 @@ def create_category(category:CategorySchema, session=Depends(get_db)):
     
     if existing is None:
 
-        new_category=Category(name=category.name) #creates the instance of the category class
+        new_category=Category(name=category.name,
+                              description=category.description,
+                              image=category.image) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_category)

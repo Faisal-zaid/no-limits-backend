@@ -16,11 +16,11 @@ class OrderSchema(BaseModel):
 def create_order(order:OrderSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(Order).filter(Order.name==order.name).first()
+    existing=session.query(Order).filter(Order.customer_name==order.customer_name).first()
     
     if existing is None:
 
-        new_order=Order(name=order.name) #creates the instance of the category class
+        new_order=Order(customer_name=order.customer_name) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_order)

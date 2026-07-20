@@ -4,10 +4,13 @@ from pydantic import BaseModel
 
 router=APIRouter()
 
-#for validation of product i will do 
-class ProductSchema(BaseModel):
-    name:str
-    base_price:int
+#for validation of Order i will do 
+class OrderSchema(BaseModel):
+    customer_name=str
+    customer_email=str
+    customer_phone=str
+    status=str
+    total_price=int
 #create a single product 
 @router.post("/product")
 def create_product(product:ProductSchema, session=Depends(get_db)):

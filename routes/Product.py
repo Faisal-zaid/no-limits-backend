@@ -31,12 +31,12 @@ def create_product(product:ProductSchema, session=Depends(get_db)):
         return {"message":"Product already exists"}
 
 #retrieve all categories
-@router.get("/category")
-def get_categories(session=Depends(get_db)):
-    #here i will use sqlalchemy to retrieve all categories
+@router.get("/product")
+def get_products(session=Depends(get_db)):
+    #here i will use sqlalchemy to retrieve all products
     #code to retrive categories
-    categories=session.query(Category).all()
-    return categories
+    products=session.query(Product).all()
+    return products
 
 #retrieve a single category
 @router.get("/category/{category_id}")#never forget the parameters inside

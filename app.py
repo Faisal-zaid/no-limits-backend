@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 #tells fastapi of the separate route that will communicate to it
 from routes.Category import router as category_router
 from routes.Product import router as product_router
+from routes.ProductField import router as productfield_router
 
 #create an instance
 app=FastAPI()
@@ -16,6 +17,7 @@ app=FastAPI()
 #acts as blueprint for the route
 app.include_router(category_router)
 app.include_router(product_router)
+app.include_router(productfield_router)
 
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_methods=["*"])

@@ -44,13 +44,13 @@ def get_productfieldoption(productfieldoption_id, session=Depends(get_db)):
     productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.id==productfieldoption_id).first()
     return productfieldoption
 
-#update a single category
-@router.patch("/productfield/{productfield_id}")
-def update_productfield(productfield_id, data:ProductFieldSchema, session=Depends(get_db)):
-    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
+#update a single productfieldoption
+@router.patch("/productfieldoption/{productfieldoption_id}")
+def update_productfieldoption(productfieldoption_id, data:ProductFieldOptionSchema, session=Depends(get_db)):
+    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.id==productfieldoption_id).first()
 
-    if not ProductField:
-        return{"message":"ProductField not found"}
+    if not ProductFieldOption:
+        return{"message":"ProductFieldOption not found"}
     
     # #check to prevent duplicate values
     # if data.name:
@@ -60,14 +60,14 @@ def update_productfield(productfield_id, data:ProductFieldSchema, session=Depend
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    productfield.name=data.name
+    productfieldoption.name=data.name
         # if data.description is not None:
         #     Category.description==data.description
 
     session.commit()  
-    session.refresh(productfield)
+    session.refresh(productfieldoption)
 
-    return{"message":"product field updated successfully"}      
+    return{"message":"product-field-option updated successfully"}      
 
 #delete a single product
 @router.delete("/productfield/{productfield_id}")

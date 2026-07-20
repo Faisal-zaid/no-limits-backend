@@ -6,11 +6,11 @@ router=APIRouter()
 
 #for validation of Order i will do 
 class OrderSchema(BaseModel):
-    customer_name=str
-    customer_email=str
-    customer_phone=str
-    status=str
-    total_price=int
+    customer_name:str
+    customer_email:str
+    customer_phone:str
+    status:str
+    total_price:int
 #create a single product 
 @router.post("/order")
 def create_order(order:OrderSchema, session=Depends(get_db)):

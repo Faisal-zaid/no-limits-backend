@@ -68,6 +68,10 @@ def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
         
     #     if data.name:
     product.name=data.name
+    product.category_id=data.category_id
+    product.base_price=data.base_price
+    product.description=data.description
+    product.image=data.image
         # if data.description is not None:
         #     Category.description==data.description
 

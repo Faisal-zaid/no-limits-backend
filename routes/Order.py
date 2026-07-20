@@ -12,26 +12,26 @@ class OrderSchema(BaseModel):
     status=str
     total_price=int
 #create a single product 
-@router.post("/product")
-def create_product(product:ProductSchema, session=Depends(get_db)):
+@router.post("/order")
+def create_order(order:OrderSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(Product).filter(Product.name==product.name).first()
+    existing=session.query(Order).filter(Order.name==order.name).first()
     
     if existing is None:
 
-        new_product=Product(name=product.name) #creates the instance of the category class
+        new_order=Order(name=order.name) #creates the instance of the category class
     
     #adds the instance to the transaction
-        session.add(new_product)
+        session.add(new_order)
 
     #then commits the transaction
         session.commit()
     
-        return{"message":"Product created successfully"}
+        return{"message":"Order made successfully"}
 
     else:
-        return {"message":"Product already exists"}
+        return {"message":"order already exists"}
 
 #retrieve all products
 @router.get("/product")

@@ -38,11 +38,11 @@ def get_products(session=Depends(get_db)):
     products=session.query(Product).all()
     return products
 
-#retrieve a single category
-@router.get("/category/{category_id}")#never forget the parameters inside
-def get_category(category_id, session=Depends(get_db)):
-    category=session.query(Category).filter(Category.id==category_id).first()
-    return category
+#retrieve a single product
+@router.get("/product/{product_id}")#never forget the parameters inside
+def get_product(product_id, session=Depends(get_db)):
+    product=session.query(Product).filter(Product.id==product_id).first()
+    return product
 
 #update a single category
 @router.patch("/category/{category_id}")

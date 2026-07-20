@@ -45,11 +45,11 @@ def get_product(product_id, session=Depends(get_db)):
     return product
 
 #update a single category
-@router.patch("/category/{category_id}")
-def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
-    category=session.query(Category).filter(Category.id==category_id).first()
+@router.patch("/product/{product_id}")
+def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
+    product=session.query(Product).filter(Product.id==product_id).first()
 
-    if not Category:
+    if not Product:
         return{"message":"Category not found"}
     
     # #check to prevent duplicate values
@@ -60,14 +60,14 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    category.name=data.name
+    product.name=data.name
         # if data.description is not None:
         #     Category.description==data.description
 
     session.commit()  
-    session.refresh(category)
+    session.refresh(product)
 
-    return{"message":"category updated successfully"}      
+    return{"message":"product updated successfully"}      
 
 #delete a single category
 @router.delete("/category/{category_id}")

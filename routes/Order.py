@@ -47,13 +47,13 @@ def get_order(order_id, session=Depends(get_db)):
     order=session.query(Order).filter(Order.id==order_id).first()
     return order
 
-#update a single product
-@router.patch("/product/{product_id}")
-def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
-    product=session.query(Product).filter(Product.id==product_id).first()
+#update a single order
+@router.patch("/order/{order_id}")
+def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
+    order=session.query(Order).filter(Order.id==order_id).first()
 
-    if not Product:
-        return{"message":"Product not found"}
+    if not Order:
+        return{"message":"Order not found"}
     
     # #check to prevent duplicate values
     # if data.name:
@@ -63,14 +63,14 @@ def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    product.name=data.name
+    order.name=data.name
         # if data.description is not None:
         #     Category.description==data.description
 
     session.commit()  
-    session.refresh(product)
+    session.refresh(order)
 
-    return{"message":"product updated successfully"}      
+    return{"message":"order updated successfully"}      
 
 #delete a single product
 @router.delete("/product/{product_id}")

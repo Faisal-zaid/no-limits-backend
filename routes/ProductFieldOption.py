@@ -9,26 +9,26 @@ class ProductFieldOptionSchema(BaseModel):
     value:str
     
 #create a single category 
-@router.post("/productfield")
-def create_productfield(productfield:ProductFieldSchema, session=Depends(get_db)):
+@router.post("/productfieldoption")
+def create_productfieldoption(productfieldoption:ProductFieldOptionSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(ProductField).filter(ProductField.name==productfield.name).first()
+    existing=session.query(ProductFieldOption).filter(ProductFieldOption.name==productfieldoption.name).first()
     
     if existing is None:
 
-        new_productfield=ProductField(name=productfield.name) #creates the instance of the category class
+        new_productfield=ProductFieldOption(name=productfieldoption.name) #creates the instance of the category class
     
     #adds the instance to the transaction
-        session.add(new_productfield)
+        session.add(new_productfieldoption)
 
     #then commits the transaction
         session.commit()
     
-        return{"message":"Product field created successfully"}
+        return{"message":"Product field option created successfully"}
 
     else:
-        return {"message":"Product field already exists"}
+        return {"message":"Product field option already exists"}
 
 #retrieve all categories
 @router.get("/productfield")

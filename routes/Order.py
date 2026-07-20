@@ -20,7 +20,9 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
     
     if existing is None:
 
-        new_order=Order(customer_name=order.customer_name) #creates the instance of the category class
+        new_order=Order(customer_name=order.customer_name,
+                        customer_email=order.customer_email,
+                        customer_phone=order.customer_phone) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_order)

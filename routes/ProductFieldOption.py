@@ -38,11 +38,11 @@ def get_productsfieldoption(session=Depends(get_db)):
     productsfieldoption=session.query(ProductFieldOption).all()
     return productsfieldoption
 
-#retrieve a single product
-@router.get("/productfield/{productfield_id}")#never forget the parameters inside
-def get_productfield(productfield_id, session=Depends(get_db)):
-    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
-    return productfield
+#retrieve a single product field option
+@router.get("/productfieldoption/{productfieldoption_id}")#never forget the parameters inside
+def get_productfieldoption(productfieldoption_id, session=Depends(get_db)):
+    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.id==productfieldoption_id).first()
+    return productfieldoption
 
 #update a single category
 @router.patch("/productfield/{productfield_id}")

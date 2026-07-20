@@ -42,10 +42,10 @@ def get_orders(session=Depends(get_db)):
     return orders
 
 #retrieve a single product
-@router.get("/product/{product_id}")#never forget the parameters inside
-def get_product(product_id, session=Depends(get_db)):
-    product=session.query(Product).filter(Product.id==product_id).first()
-    return product
+@router.get("/order/{order_id}")#never forget the parameters inside
+def get_order(order_id, session=Depends(get_db)):
+    order=session.query(Order).filter(Order.id==order_id).first()
+    return order
 
 #update a single product
 @router.patch("/product/{product_id}")

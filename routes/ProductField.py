@@ -74,7 +74,7 @@ def update_productfield(productfield_id, data:ProductFieldSchema, session=Depend
 #delete a single product
 @router.delete("/productfield/{productfield_id}")
 def delete_productfield(productfield_id,session=Depends(get_db)):
-    productfield = session.query(ProductField).filter(productfield.id == productfield_id).first()
+    productfield = session.query(ProductField).filter(ProductField.id == productfield_id).first()
 
     session.delete(productfield)
     session.commit()

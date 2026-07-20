@@ -47,12 +47,12 @@ def get_productfield(productfield_id, session=Depends(get_db)):
     return productfield
 
 #update a single category
-@router.patch("/product/{product_id}")
-def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
-    product=session.query(Product).filter(Product.id==product_id).first()
+@router.patch("/productfield/{productfield_id}")
+def update_productfield(productfield_id, data:ProductFieldSchema, session=Depends(get_db)):
+    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
 
-    if not Product:
-        return{"message":"Category not found"}
+    if not ProductField:
+        return{"message":"ProductField not found"}
     
     # #check to prevent duplicate values
     # if data.name:
@@ -62,14 +62,14 @@ def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    product.name=data.name
+    productfield.name=data.name
         # if data.description is not None:
         #     Category.description==data.description
 
     session.commit()  
-    session.refresh(product)
+    session.refresh(productfield)
 
-    return{"message":"product updated successfully"}      
+    return{"message":"product field updated successfully"}      
 
 #delete a single product
 @router.delete("/product/{product_id}")

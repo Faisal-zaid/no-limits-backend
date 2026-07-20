@@ -34,7 +34,7 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
         return {"message":"order already exists"}
 
 #retrieve all orders. Admin can view all orders from all customers
-@router.get("/orders")
+@router.get("/order")
 def get_orders(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive categories

@@ -41,10 +41,10 @@ def get_productsfield(session=Depends(get_db)):
     return productsfield
 
 #retrieve a single product
-@router.get("/product/{product_id}")#never forget the parameters inside
-def get_product(product_id, session=Depends(get_db)):
-    product=session.query(Product).filter(Product.id==product_id).first()
-    return product
+@router.get("/productfield/{productfield_id}")#never forget the parameters inside
+def get_productfield(productfield_id, session=Depends(get_db)):
+    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
+    return productfield
 
 #update a single category
 @router.patch("/product/{product_id}")

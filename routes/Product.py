@@ -9,6 +9,8 @@ class ProductSchema(BaseModel):
     name:str
     category_id:int
     base_price:int
+    description:str
+    image:str
 #create a single product 
 @router.post("/product")
 def create_product(product:ProductSchema, session=Depends(get_db)):

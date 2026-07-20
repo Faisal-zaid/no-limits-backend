@@ -33,7 +33,7 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
     else:
         return {"message":"order already exists"}
 
-#retrieve all orders
+#retrieve all orders. Admin can view all orders from all customers
 @router.get("/orders")
 def get_orders(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
@@ -47,7 +47,7 @@ def get_order(order_id, session=Depends(get_db)):
     order=session.query(Order).filter(Order.id==order_id).first()
     return order
 
-#update a single order
+#update a single order. Admin can update status of the order 
 @router.patch("/order/{order_id}")
 def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
     order=session.query(Order).filter(Order.id==order_id).first()
@@ -72,7 +72,7 @@ def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
 
     return{"message":"order updated successfully"}      
 
-#delete a single order
+#delete a single order. This end point may never be used since orders are rarely deleted. So i just have it here incase i need to ever use it
 @router.delete("/order/{order_id}")
 def delete_order(order_id,session=Depends(get_db)):
     order = session.query(Order).filter(Order.id == order_id).first()

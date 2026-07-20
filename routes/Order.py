@@ -41,7 +41,7 @@ def get_orders(session=Depends(get_db)):
     orders=session.query(Order).all()
     return orders
 
-#retrieve a single product
+#retrieve a single order
 @router.get("/order/{order_id}")#never forget the parameters inside
 def get_order(order_id, session=Depends(get_db)):
     order=session.query(Order).filter(Order.id==order_id).first()

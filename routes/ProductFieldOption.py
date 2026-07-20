@@ -30,13 +30,13 @@ def create_productfieldoption(productfieldoption:ProductFieldOptionSchema, sessi
     else:
         return {"message":"Product field option already exists"}
 
-#retrieve all categories
-@router.get("/productfield")
-def get_productsfield(session=Depends(get_db)):
+#retrieve all productfieldoptions
+@router.get("/productfieldoption")
+def get_productsfieldoption(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive productfields
-    productsfield=session.query(ProductField).all()
-    return productsfield
+    productsfieldoption=session.query(ProductFieldOption).all()
+    return productsfieldoption
 
 #retrieve a single product
 @router.get("/productfield/{productfield_id}")#never forget the parameters inside

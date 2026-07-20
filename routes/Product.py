@@ -20,7 +20,11 @@ def create_product(product:ProductSchema, session=Depends(get_db)):
     
     if existing is None:
 
-        new_product=Product(name=product.name) #creates the instance of the category class
+        new_product=Product(name=product.name,
+                            category=product.category_id,
+                            price=product.base_price,
+                            description=product.description,
+                            image=product.image) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_product)

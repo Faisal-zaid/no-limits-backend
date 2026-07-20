@@ -72,7 +72,7 @@ def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
 #delete a single product
 @router.delete("/product/{product_id}")
 def delete_product(product_id,session=Depends(get_db)):
-    product = session.query(Product).filter(product.id == product_id).first()
+    product = session.query(Product).filter(Product.id == product_id).first()
 
     session.delete(product)
     session.commit()

@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.Category import router as category_router
 from routes.Product import router as product_router
 from routes.ProductField import router as productfield_router
+from routes.ProductFieldOption import router as productfieldoption_router
 
 #create an instance
 app=FastAPI()
@@ -18,6 +19,7 @@ app=FastAPI()
 app.include_router(category_router)
 app.include_router(product_router)
 app.include_router(productfield_router)
+app.include_router(productfieldoption_router)
 
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_methods=["*"])

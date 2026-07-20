@@ -64,6 +64,8 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
         
     #     if data.name:
     category.name=data.name
+    category.description=data.description
+    category.image=data.image
         # if data.description is not None:
         #     Category.description==data.description
 

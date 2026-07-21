@@ -68,7 +68,10 @@ def update_productfield(productfield_id, data:ProductFieldSchema, session=Depend
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    productfield.name=data.name
+    productfield.label=data.label
+    productfield.field_type=data.field_type
+    productfield.required=data.required
+    productfield.placeholder=data.placeholder
         # if data.description is not None:
         #     Category.description==data.description
 

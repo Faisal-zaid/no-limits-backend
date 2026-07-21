@@ -50,7 +50,7 @@ def get_productfieldoption(productfieldoption_id, session=Depends(get_db)):
 #update a single productfieldoption
 @router.patch("/productfieldoption/{productfieldoption_id}")
 def update_productfieldoption(productfieldoption_id, data:ProductFieldOptionSchema, session=Depends(get_db)):
-    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.id==productfieldoption_id).first()
+    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.field_id==productfieldoption_id).first()
 
     if not ProductFieldOption:
         return{"message":"ProductFieldOption not found"}
@@ -76,7 +76,7 @@ def update_productfieldoption(productfieldoption_id, data:ProductFieldOptionSche
 #delete a single product
 @router.delete("/productfieldoption/{productfieldoption_id}")
 def delete_productfieldoption(productfieldoption_id,session=Depends(get_db)):
-    productfieldoption = session.query(ProductFieldOption).filter(ProductFieldOption.id == productfieldoption_id).first()
+    productfieldoption = session.query(ProductFieldOption).filter(ProductFieldOption.field_id == productfieldoption_id).first()
 
     session.delete(productfieldoption)
     session.commit()

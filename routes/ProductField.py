@@ -49,7 +49,7 @@ def get_productsfield(session=Depends(get_db)):
 #retrieve a single product
 @router.get("/productfield/{productfield_id}")#never forget the parameters inside
 def get_productfield(productfield_id, session=Depends(get_db)):
-    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
+    productfield=session.query(ProductField).filter(ProductField.product_id==productfield_id).first()
     return productfield
 
 #update a single product field

@@ -12,6 +12,7 @@ from routes.Product import router as product_router
 from routes.ProductField import router as productfield_router
 from routes.ProductFieldOption import router as productfieldoption_router
 from routes.Order import router as order_router
+from routes.Checkout import router as checkout_router
 
 #create an instance
 app=FastAPI()

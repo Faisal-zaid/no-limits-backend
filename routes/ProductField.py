@@ -55,7 +55,7 @@ def get_productfield(productfield_id, session=Depends(get_db)):
 #update a single product field
 @router.patch("/productfield/{productfield_id}")
 def update_productfield(productfield_id, data:ProductFieldSchema, session=Depends(get_db)):
-    productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
+    productfield=session.query(ProductField).filter(ProductField.product_id==productfield_id).first()
 
     if not productfield:
         return{"message":"ProductField not found"}
@@ -83,7 +83,7 @@ def update_productfield(productfield_id, data:ProductFieldSchema, session=Depend
 #delete a single product
 @router.delete("/productfield/{productfield_id}")
 def delete_productfield(productfield_id,session=Depends(get_db)):
-    productfield = session.query(ProductField).filter(ProductField.id == productfield_id).first()
+    productfield = session.query(ProductField).filter(ProductField.product_id == productfield_id).first()
 
     session.delete(productfield)
     session.commit()

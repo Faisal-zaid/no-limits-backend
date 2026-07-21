@@ -44,7 +44,7 @@ def get_productsfieldoption(session=Depends(get_db)):
 #retrieve a single product field option
 @router.get("/productfieldoption/{productfieldoption_id}")#never forget the parameters inside
 def get_productfieldoption(productfieldoption_id, session=Depends(get_db)):
-    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.id==productfieldoption_id).first()
+    productfieldoption=session.query(ProductFieldOption).filter(ProductFieldOption.field_id==productfieldoption_id).first()
     return productfieldoption
 
 #update a single productfieldoption

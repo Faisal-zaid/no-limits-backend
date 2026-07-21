@@ -68,7 +68,7 @@ def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    order.name=data.name
+    order.customer_name=data.customer_name
     order.customer_email=data.customer_email
     order.customer_phone=data.customer_phone
         # if data.description is not None:

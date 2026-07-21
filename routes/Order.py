@@ -16,24 +16,27 @@ class OrderSchema(BaseModel):
 def create_order(order:OrderSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(Order).filter(Order.customer_name==order.customer_name).first()
+    # existing=session.query(Order).filter(Order.customer_name==order.customer_name).first()
     
-    if existing is None:
+    # if existing is None:
 
-        new_order=Order(customer_name=order.customer_name,
-                        customer_email=order.customer_email,
-                        customer_phone=order.customer_phone) #creates the instance of the category class
+
+    new_order=Order(customer_name=order.customer_name,
+            customer_email=order.customer_email,
+            customer_phone=order.customer_phone) #creates the instance of the category class
     
     #adds the instance to the transaction
-        session.add(new_order)
+    session.add(new_order)
 
     #then commits the transaction
-        session.commit()
+    session.commit()
     
-        return{"message":"Order made successfully"}
+    return{"message":"Order made successfully"}
 
-    else:
-        return {"message":"order already exists"}
+    # else:
+    #     return {"message":"order already exists"}
+
+    # removed check since customer is allowed to place as many orders as necessary
 
 #retrieve all orders. Admin can view all orders from all customers
 @router.get("/order")

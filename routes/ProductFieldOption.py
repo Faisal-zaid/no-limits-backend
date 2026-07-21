@@ -18,7 +18,9 @@ def create_productfieldoption(productfieldoption:ProductFieldOptionSchema, sessi
     
     if existing is None:
 
-        new_productfieldoption=ProductFieldOption(value=productfieldoption.value) #creates the instance of the category class
+        new_productfieldoption=ProductFieldOption(field_id=productfieldoption.field_id,
+                                                  value=productfieldoption.value
+                                                  ) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_productfieldoption)

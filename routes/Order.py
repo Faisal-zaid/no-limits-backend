@@ -12,24 +12,7 @@ class OrderSchema(BaseModel):
     status:str
     total_price:int
 
-#this code isnt permanent, trying to add checkout so if it doesnt work i will remove
-class OrderItemFieldValueSchema(BaseModel):
-    product_field_id: int
-    value: str
 
-
-class OrderItemSchema(BaseModel):
-    product_id: int
-    quantity: int
-    fields: list[OrderItemFieldValueSchema]
-
-
-class CheckoutSchema(BaseModel):
-    customer_name: str
-    customer_email: str
-    customer_phone: str
-    items: list[OrderItemSchema]
-#end of the added code 
 #create a single product 
 @router.post("/order")
 def create_order(order:OrderSchema, session=Depends(get_db)):

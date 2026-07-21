@@ -57,7 +57,7 @@ def get_productfield(productfield_id, session=Depends(get_db)):
 def update_productfield(productfield_id, data:ProductFieldSchema, session=Depends(get_db)):
     productfield=session.query(ProductField).filter(ProductField.id==productfield_id).first()
 
-    if not ProductField:
+    if not productfield:
         return{"message":"ProductField not found"}
     
     # #check to prevent duplicate values

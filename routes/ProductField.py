@@ -6,6 +6,7 @@ router=APIRouter()
 
 #for validation of productfield i will do 
 class ProductFieldSchema(BaseModel):
+    product_id:int
     label:str
     field_type:str
     required:bool

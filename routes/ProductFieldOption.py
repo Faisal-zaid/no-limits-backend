@@ -63,7 +63,8 @@ def update_productfieldoption(productfieldoption_id, data:ProductFieldOptionSche
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    productfieldoption.name=data.name
+    productfieldoption.value=data.value
+    productfieldoption.field_id=data.field_id
         # if data.description is not None:
         #     Category.description==data.description
 

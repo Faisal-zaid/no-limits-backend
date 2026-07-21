@@ -7,6 +7,7 @@ router=APIRouter()
 #for validation of product field option i will do 
 class ProductFieldOptionSchema(BaseModel):
     value:str
+    field_id: int
     
 #create a single product-field-option
 @router.post("/productfieldoption")

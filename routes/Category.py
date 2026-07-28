@@ -9,6 +9,7 @@ class CategorySchema(BaseModel):
     name:str
     description:str
     image:str
+    subheading:str
 #create a single category 
 @router.post("/category")
 def create_category(category:CategorySchema, session=Depends(get_db)):
@@ -20,7 +21,8 @@ def create_category(category:CategorySchema, session=Depends(get_db)):
 
         new_category=Category(name=category.name,
                               description=category.description,
-                              image=category.image) #creates the instance of the category class
+                              image=category.image,
+                              subheading=category.subheading) #creates the instance of the category class
     
     #adds the instance to the transaction
         session.add(new_category)
@@ -66,6 +68,7 @@ def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
     category.name=data.name
     category.description=data.description
     category.image=data.image
+    category.subheading=data.subheading
         # if data.description is not None:
         #     Category.description==data.description
 

@@ -30,6 +30,7 @@ class Category(Base):# stores the main service categories that the business offe
     name=Column(String, nullable=False, unique=True)
     description=Column(Text)
     image=Column(String)
+    subheading=Column(String)
 
     products=relationship("Product", back_populates="category")
 

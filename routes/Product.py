@@ -13,7 +13,12 @@ class ProductSchema(BaseModel):
     image:str
 #create a single product 
 @router.post("/product")
-def create_product(product:ProductSchema, session=Depends(get_db)):
+def create_product(name:str=Form(...),
+                   category_id:int=Form(...),
+                   base_price:int=Form(...),
+                   description:str=Form(...),
+                   image:str=Form(...),
+                   session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
     existing=session.query(Product).filter(Product.name==product.name).first()

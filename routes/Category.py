@@ -67,7 +67,7 @@ def update_category(category_id:int,
                     name:str=Form(...),
                     description:str=Form(...),
                     subheading:str=Form(...),
-                    image:UploadFile | None=File(None),
+                    image: Optional[UploadFile] = File(None),
                     session=Depends(get_db)):
     category=session.query(Category).filter(Category.id==category_id).first()
 

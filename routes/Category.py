@@ -15,7 +15,11 @@ router=APIRouter()
 #     subheading:str
 #create a single category 
 @router.post("/category")
-def create_category(category:CategorySchema, session=Depends(get_db)):
+def create_category(name:str=Form(...),
+                    description:str=Form(...),
+                    subheading:str=Form(...),
+                    image:UploadFile=File(...),
+                    session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
     existing=session.query(Category).filter(Category.name==category.name).first()

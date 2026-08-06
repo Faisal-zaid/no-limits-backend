@@ -32,7 +32,7 @@ def create_category(name:str=Form(...),
     new_category=Category(name=name,
                           description=description,
                           subheading=subheading,
-                          image=result["secure url"]
+                          image=result["secure_url"]
                           ) #creates the instance of the category class
     
     #adds the instance to the transaction

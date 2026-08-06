@@ -4,6 +4,7 @@ from pydantic import BaseModel
 import cloudinary.uploader
 import cloudinary_config
 from fastapi import UploadFile, File, Form
+from typing import Optional #adding this so i can use "|"  operand
 
 router=APIRouter()
 

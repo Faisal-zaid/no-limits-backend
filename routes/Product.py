@@ -20,7 +20,7 @@ def create_product(name:str=Form(...),
                    category_id:int=Form(...),
                    base_price:int=Form(...),
                    description:str=Form(...),
-                   image:str=Form(...),
+                   image:UploadFile=File(...),
                    session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends #the APIRouter allows us to use routes ea
 from models import Category, get_db
 from pydantic import BaseModel
 import cloudinary.uploader
+from fastapi import UploadFile, File, Form
 
 router=APIRouter()
 

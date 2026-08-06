@@ -24,18 +24,20 @@ def create_product(name:str=Form(...),
                    session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(Product).filter(Product.name==product.name).first()
+    existing=session.query(Product).filter(Product.name==name).first()
     
     if existing :
         return {"message":"product exists"}
 
     result=cloudinary.uploader.upload(image.file)
 
-    new_product=Product(name=name,
-                        category=category_id,
-                        price=base_price,
-                        description=description,
-                        image=result["secure_url"]) #creates the instance of the category class
+    new_product = Product(
+    name=name,
+    category_id=category_id,
+    base_price=base_price,
+    description=description,
+    image=result["secure_url"]
+) #creates the instance of the category class
     
     #adds the instance to the transaction
     session.add(new_product)

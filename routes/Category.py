@@ -62,7 +62,12 @@ def get_category(category_id, session=Depends(get_db)):
 
 #update a single category
 @router.patch("/category/{category_id}")
-def update_category(category_id, data:CategorySchema, session=Depends(get_db)):
+def update_category(category_id:int, 
+                    name:str=Form(...),
+                    description:str=Form(...),
+                    subheading:str=Form(...),
+                    image:UploadFile | None=File(None),
+                    session=Depends(get_db)):
     category=session.query(Category).filter(Category.id==category_id).first()
 
     if not Category:

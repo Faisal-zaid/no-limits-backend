@@ -1,5 +1,6 @@
 import cloudinary
 import os
+from dotenv import load_dotenv
 
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),

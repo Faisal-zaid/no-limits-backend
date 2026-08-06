@@ -24,23 +24,27 @@ def create_category(name:str=Form(...),
     #now the actual code to create records
     existing=session.query(Category).filter(Category.name==name).first()
     
-    if existing is None:
+    if existing :
+        return {"message":"category exists"}
 
-        new_category=Category(name=category.name,
-                              description=category.description,
-                              image=category.image,
-                              subheading=category.subheading) #creates the instance of the category class
+    result=cloudinary.uploader.upload(image.file)
+
+    new_category=Category(name=name,
+                          description=description,
+                          subheading=subheading,
+                          image=result["secure url"]
+                          ) #creates the instance of the category class
     
     #adds the instance to the transaction
-        session.add(new_category)
+    session.add(new_category)
 
     #then commits the transaction
-        session.commit()
+    session.commit()
     
-        return{"message":"Category created successfully"}
+    return{"message":"Category created successfully" }
+    
 
-    else:
-        return {"message":"category already exists"}
+
 
 #retrieve all categories
 @router.get("/category")

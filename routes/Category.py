@@ -81,10 +81,12 @@ def update_category(category_id:int,
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    category.name=data.name
-    category.description=data.description
-    category.image=data.image
-    category.subheading=data.subheading
+    category.name=name
+    category.description=description
+    category.subheading=subheading
+    if image:
+        result=cloudinary.uploader.upload(image.file)
+        category.image=result["secure_url"]
         # if data.description is not None:
         #     Category.description==data.description
 

@@ -8,11 +8,11 @@ from fastapi import UploadFile, File, Form
 router=APIRouter()
 
 #for validation of category i will do 
-# class CategorySchema(BaseModel):
-#     name:str
-#     description:str
-#     image:str
-#     subheading:str
+class CategorySchema(BaseModel):
+    name:str
+    description:str
+    image:str
+    subheading:str
 #create a single category 
 @router.post("/category")
 def create_category(name:str=Form(...),

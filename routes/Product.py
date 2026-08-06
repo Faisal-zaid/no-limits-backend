@@ -26,24 +26,27 @@ def create_product(name:str=Form(...),
     #now the actual code to create records
     existing=session.query(Product).filter(Product.name==product.name).first()
     
-    if existing is None:
+    if existing :
+        return {"message":"product exists"}
 
-        new_product=Product(name=product.name,
-                            category=product.category_id,
-                            price=product.base_price,
-                            description=product.description,
-                            image=product.image) #creates the instance of the category class
+    result=cloudinary.uploader.upload(image.file)
+
+    new_product=Product(name=name,
+                        category=category_id,
+                        price=base_price,
+                        description=description,
+                        image=result["secure_url"]) #creates the instance of the category class
     
     #adds the instance to the transaction
-        session.add(new_product)
+    session.add(new_product)
 
     #then commits the transaction
-        session.commit()
+    session.commit()
     
-        return{"message":"Product created successfully"}
+    return{"message":"Product created successfully"}
 
-    else:
-        return {"message":"Product already exists"}
+    # else:
+    #     return {"message":"Product already exists"}
 
 #retrieve all products
 @router.get("/product")

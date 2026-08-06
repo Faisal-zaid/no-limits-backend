@@ -3,6 +3,7 @@ from models import Product, get_db
 from pydantic import BaseModel
 import cloudinary_config
 from fastapi import UploadFile,File,Form
+import cloudinary.uploader
 
 router=APIRouter()
 

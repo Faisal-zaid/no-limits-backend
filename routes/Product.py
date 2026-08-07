@@ -66,7 +66,13 @@ def get_product(product_id, session=Depends(get_db)):
 
 #update a single product
 @router.patch("/product/{product_id}")
-def update_product(product_id, data:ProductSchema, session=Depends(get_db)):
+def update_product(product_id:int,
+                   name:str=Form(...),
+                   category_id:int=Form(...),
+                   base_price:int=Form(...),
+                   description:str=Form(...),
+                   image:UploadFile=File(...), 
+                   session=Depends(get_db)):
     product=session.query(Product).filter(Product.id==product_id).first()
 
     if not Product:

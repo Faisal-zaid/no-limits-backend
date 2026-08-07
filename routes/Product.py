@@ -87,11 +87,13 @@ def update_product(product_id:int,
     #         return {"message":"name used by another category"}
         
     #     if data.name:
-    product.name=data.name
-    product.category_id=data.category_id
-    product.base_price=data.base_price
-    product.description=data.description
-    product.image=data.image
+    product.name=name
+    product.category_id=category_id
+    product.base_price=base_price
+    product.description=description
+    if image:
+        result=cloudinary.uploader.upload(image.file)
+        product.image=result["secure_url"]
         # if data.description is not None:
         #     Category.description==data.description
 

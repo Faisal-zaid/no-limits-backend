@@ -71,7 +71,7 @@ def update_product(product_id:int,
                    category_id:int=Form(...),
                    base_price:int=Form(...),
                    description:str=Form(...),
-                   image:UploadFile=File(...), 
+                   image: Optional[UploadFile] = File(None),
                    session=Depends(get_db)):
     product=session.query(Product).filter(Product.id==product_id).first()
 

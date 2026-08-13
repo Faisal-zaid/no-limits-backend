@@ -16,8 +16,9 @@ class ProductFieldSchema(BaseModel):
 def create_productfield(productfield:ProductFieldSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(ProductField).filter(ProductField.label==productfield.label).first()
-    
+    existing = session.query(ProductField).filter(
+    ProductField.product_id == productfield.product_id,
+    ProductField.label == productfield.label).first()
     if existing is None:
 
         new_productfield=ProductField(label=productfield.label,

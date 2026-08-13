@@ -14,7 +14,9 @@ class ProductFieldOptionSchema(BaseModel):
 def create_productfieldoption(productfieldoption:ProductFieldOptionSchema, session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
-    existing=session.query(ProductFieldOption).filter(ProductFieldOption.value==productfieldoption.value).first()
+    existing = session.query(ProductFieldOption).filter(
+        ProductFieldOption.field_id == productfieldoption.field_id,
+        ProductFieldOption.value == productfieldoption.value).first()
     
     if existing is None:
 

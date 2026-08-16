@@ -29,7 +29,7 @@ app.include_router(productfieldoption_router)
 app.include_router(checkout_router)
 
 #allow access from all servers
-app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_methods=["*"])
+app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_headers=["*"],allow_methods=["*"])
 
 #create routes and access resources 
 @app.get("/")

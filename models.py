@@ -1,11 +1,14 @@
 #import necessary packages
+import os
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import Column,Integer,Text,DateTime,String,ForeignKey,Boolean,create_engine
 from datetime import datetime
 
 #create an engine responsible for converting sql to python and vice versa
 
-engine=create_engine("sqlite:///nolimits.db", echo=True)   # adding the echo is true lets you know if the database is working
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL, echo=True)   # adding the echo is true lets you know if the database is working
 
 #now creating session which allows us to interface with db
 

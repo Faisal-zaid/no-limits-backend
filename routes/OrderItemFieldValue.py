@@ -117,3 +117,30 @@ def update_order_item_field_value(
     return {
         "message": "Order item field value updated successfully"
     }
+
+#delte items
+
+@router.delete("/orderitemfieldvalue/{value_id}")
+def delete_order_item_field_value(
+    value_id: int,
+    session=Depends(get_db)
+):
+
+    value = session.query(
+        OrderItemFieldValue
+    ).filter(
+        OrderItemFieldValue.id == value_id
+    ).first()
+
+    if not value:
+        return {
+            "message": "Order item field value not found"
+        }
+
+    session.delete(value)
+
+    session.commit()
+
+    return {
+        "message": "Order item field value deleted successfully"
+    }

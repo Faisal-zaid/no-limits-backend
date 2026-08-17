@@ -37,7 +37,8 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
     session.refresh(new_order)
 
     
-    return{"message":"Order made successfully"}
+    return{"message":"Order made successfully",
+           "order_id": new_order.id}
 
     # else:
     #     return {"message":"order already exists"}

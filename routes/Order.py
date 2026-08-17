@@ -61,7 +61,7 @@ def get_order(order_id, session=Depends(get_db)):
 def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
     order=session.query(Order).filter(Order.id==order_id).first()
 
-    if not Order:
+    if not order:
         return{"message":"Order not found"}
     
     # #check to prevent duplicate values

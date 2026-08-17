@@ -48,3 +48,24 @@ def get_order_item_field_values(
     ).all()
 
     return values
+
+# GET ONE ORDER ITEM FIELD VALUE
+
+@router.get("/orderitemfieldvalue/{value_id}")
+def get_order_item_field_value(
+    value_id: int,
+    session=Depends(get_db)
+):
+
+    value = session.query(
+        OrderItemFieldValue
+    ).filter(
+        OrderItemFieldValue.id == value_id
+    ).first()
+
+    if not value:
+        return {
+            "message": "Order item field value not found"
+        }
+
+    return value

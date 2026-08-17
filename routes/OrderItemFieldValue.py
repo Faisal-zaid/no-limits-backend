@@ -69,3 +69,19 @@ def get_order_item_field_value(
         }
 
     return value
+
+#get one item
+
+@router.get("/orderitemfieldvalue/orderitem/{order_item_id}")
+def get_values_by_order_item(
+    order_item_id: int,
+    session=Depends(get_db)
+):
+
+    values = session.query(
+        OrderItemFieldValue
+    ).filter(
+        OrderItemFieldValue.order_item_id == order_item_id
+    ).all()
+
+    return values

@@ -25,7 +25,9 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
 
     new_order=Order(customer_name=order.customer_name,
             customer_email=order.customer_email,
-            customer_phone=order.customer_phone) #creates the instance of the category class
+            customer_phone=order.customer_phone,
+            status="Pending",
+            total_price=order.total_price) #creates the instance of the category class
     
     #adds the instance to the transaction
     session.add(new_order)

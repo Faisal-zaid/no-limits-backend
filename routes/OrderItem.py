@@ -115,3 +115,30 @@ def update_order_item(
     return {
         "message": "Order item updated successfully"
     }
+
+
+#delete order item
+
+@router.delete("/orderitem/{order_item_id}")
+def delete_order_item(
+    order_item_id: int,
+    session=Depends(get_db)
+):
+
+    order_item = (
+        session.query(OrderItem)
+        .filter(OrderItem.id == order_item_id)
+        .first()
+    )
+
+    if not order_item:
+        return {
+            "message": "Order item not found"
+        }
+
+    session.delete(order_item)
+    session.commit()
+
+    return {
+        "message": "Order item deleted successfully"
+    }

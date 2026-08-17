@@ -35,3 +35,16 @@ def create_order_item_field_value(
         "message": "Order item field value created successfully",
         "order_item_field_value_id": new_value.id
     }
+
+#get all items
+
+@router.get("/orderitemfieldvalue")
+def get_order_item_field_values(
+    session=Depends(get_db)
+):
+
+    values = session.query(
+        OrderItemFieldValue
+    ).all()
+
+    return values

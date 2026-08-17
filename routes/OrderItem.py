@@ -85,3 +85,33 @@ def get_order_item(
 
     return order_item
 
+#update order item
+
+@router.patch("/orderitem/{order_item_id}")
+def update_order_item(
+    order_item_id: int,
+    data: OrderItemSchema,
+    session=Depends(get_db)
+):
+
+    order_item = (
+        session.query(OrderItem)
+        .filter(OrderItem.id == order_item_id)
+        .first()
+    )
+
+    if not order_item:
+        return {
+            "message": "Order item not found"
+        }
+
+    order_item.order_id = data.order_id
+    order_item.product_id = data.product_id
+    order_item.quantity = data.quantity
+
+    session.commit()
+    session.refresh(order_item)
+
+    return {
+        "message": "Order item updated successfully"
+    }

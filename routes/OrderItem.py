@@ -47,3 +47,19 @@ def get_order_items(session=Depends(get_db)):
     order_items = session.query(OrderItem).all()
 
     return order_items
+
+#get one order item
+
+@router.get("/orderitem/order/{order_id}")
+def get_order_items_by_order(
+    order_id: int,
+    session=Depends(get_db)
+):
+
+    order_items = (
+        session.query(OrderItem)
+        .filter(OrderItem.order_id == order_id)
+        .all()
+    )
+
+    return order_items

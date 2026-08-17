@@ -48,7 +48,7 @@ def get_order_items(session=Depends(get_db)):
 
     return order_items
 
-#get one order item
+#get order items for a specific order
 
 @router.get("/orderitem/order/{order_id}")
 def get_order_items_by_order(
@@ -63,3 +63,25 @@ def get_order_items_by_order(
     )
 
     return order_items
+
+#get one order item
+
+@router.get("/orderitem/{order_item_id}")
+def get_order_item(
+    order_item_id: int,
+    session=Depends(get_db)
+):
+
+    order_item = (
+        session.query(OrderItem)
+        .filter(OrderItem.id == order_item_id)
+        .first()
+    )
+
+    if not order_item:
+        return {
+            "message": "Order item not found"
+        }
+
+    return order_item
+

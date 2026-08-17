@@ -78,6 +78,7 @@ def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
     order.customer_name=data.customer_name
     order.customer_email=data.customer_email
     order.customer_phone=data.customer_phone
+    order.status = data.status
         # if data.description is not None:
         #     Category.description==data.description
 

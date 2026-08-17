@@ -34,6 +34,8 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
 
     #then commits the transaction
     session.commit()
+    session.refresh(new_order)
+
     
     return{"message":"Order made successfully"}
 

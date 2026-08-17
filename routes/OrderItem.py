@@ -38,3 +38,12 @@ def create_order_item(
         "message": "Order item created successfully",
         "order_item_id": new_order_item.id
     }
+
+#get all orderitems
+
+@router.get("/orderitem")
+def get_order_items(session=Depends(get_db)):
+
+    order_items = session.query(OrderItem).all()
+
+    return order_items

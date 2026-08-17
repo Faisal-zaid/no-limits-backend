@@ -85,3 +85,35 @@ def get_values_by_order_item(
     ).all()
 
     return values
+
+# UPDATE ORDER ITEM FIELD VALUE
+
+@router.patch("/orderitemfieldvalue/{value_id}")
+def update_order_item_field_value(
+    value_id: int,
+    data: OrderItemFieldValueSchema,
+    session=Depends(get_db)
+):
+
+    value = session.query(
+        OrderItemFieldValue
+    ).filter(
+        OrderItemFieldValue.id == value_id
+    ).first()
+
+    if not value:
+        return {
+            "message": "Order item field value not found"
+        }
+
+    value.order_item_id = data.order_item_id
+    value.product_field_id = data.product_field_id
+    value.value = data.value
+
+    session.commit()
+
+    session.refresh(value)
+
+    return {
+        "message": "Order item field value updated successfully"
+    }

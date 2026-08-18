@@ -29,6 +29,8 @@ app.include_router(order_router)
 app.include_router(productfield_router)
 app.include_router(productfieldoption_router)
 app.include_router(checkout_router)
+app.include_router(orderitem_router)
+app.include_router(orderitemfieldvalue_router)
 
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_headers=["*"],allow_methods=["*"])

@@ -14,6 +14,8 @@ from routes.ProductField import router as productfield_router
 from routes.ProductFieldOption import router as productfieldoption_router
 from routes.Order import router as order_router
 from routes.checkout import router as checkout_router
+from routes.OrderItem import router as orderitem_router
+from routes.OrderItemFieldValue import router as orderitemfieldvalue_router
 
 
 

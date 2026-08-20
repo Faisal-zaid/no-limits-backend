@@ -18,6 +18,8 @@ from routes.OrderItem import router as orderitem_router
 from routes.OrderItemFieldValue import router as orderitemfieldvalue_router
 
 
+Base.metadata.create_all(bind=engine)  #this line creates a missing table suppose the backend is in production
+
 
 #create an instance
 app=FastAPI()

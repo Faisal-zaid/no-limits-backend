@@ -74,6 +74,8 @@ def get_order_items_by_order(
             "base_price": item.product.base_price,
             "quantity": item.quantity       #this is possible because in the table schemas order item was linked to products
         })
+
+    return result
 #get one order item
 
 @router.get("/orderitem/{order_item_id}")

@@ -62,8 +62,7 @@ def get_order_items_by_order(
         .all()
     )
 
-    return order_items
-
+    result = []
 #get one order item
 
 @router.get("/orderitem/{order_item_id}")

@@ -64,7 +64,9 @@ def get_order_items_by_order(
 
     result = []
 
-    result.append({
+    for item in order_items:
+
+        result.append({
             "id": item.id,
             "order_id": item.order_id,
             "product_id": item.product_id,

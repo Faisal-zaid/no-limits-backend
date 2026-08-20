@@ -84,7 +84,7 @@ def get_values_by_order_item(
         OrderItemFieldValue.order_item_id == order_item_id
     ).all()
 
-    return values
+    result = []
 
 # UPDATE ORDER ITEM FIELD VALUE
 

@@ -63,6 +63,17 @@ def get_order_items_by_order(
     )
 
     result = []
+
+    result.append({
+            "id": item.id,
+            "order_id": item.order_id,
+            "product_id": item.product_id,
+            "product_name": item.product.name,
+            "product_description": item.product.description,
+            "product_image": item.product.image,
+            "base_price": item.product.base_price,
+            "quantity": item.quantity       #this is possible because in the table schemas order item was linked to products
+        })
 #get one order item
 
 @router.get("/orderitem/{order_item_id}")

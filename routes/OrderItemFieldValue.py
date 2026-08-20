@@ -86,6 +86,19 @@ def get_values_by_order_item(
 
     result = []
 
+    for value in values:
+
+        result.append({
+            "id": value.id,
+            "order_item_id": value.order_item_id,
+            "product_field_id": value.product_field_id,
+            "field_label": value.product_field.label,
+            "field_type": value.product_field.field_type,
+            "value": value.value
+        })
+
+    return result
+
 # UPDATE ORDER ITEM FIELD VALUE
 
 @router.patch("/orderitemfieldvalue/{value_id}")

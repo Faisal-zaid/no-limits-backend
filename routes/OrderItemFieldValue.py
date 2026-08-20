@@ -95,7 +95,7 @@ def get_values_by_order_item(
             "field_label": value.product_field.label,
             "field_type": value.product_field.field_type,
             "value": value.value
-        })
+        })    #from result.append is possible because models.py has access to product
 
     return result
 

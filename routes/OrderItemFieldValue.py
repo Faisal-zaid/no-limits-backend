@@ -171,3 +171,21 @@ async def upload_order_item_image(
     image: UploadFile = File(...),
     session=Depends(get_db)
 ):
+
+    product_field = (
+        session.query(ProductField)
+        .filter(ProductField.id == product_field_id)
+        .first()
+    )
+
+    if not product_field:
+        raise HTTPException(
+            status_code=404,
+            detail="Product field not found"
+        )
+
+    if product_field.field_type != "image":
+        raise HTTPException(
+            status_code=400,
+            detail="This field does not accept images"
+        )

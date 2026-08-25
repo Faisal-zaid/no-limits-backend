@@ -190,15 +190,17 @@ async def upload_order_item_image(
             detail="This field does not accept images"
         )
 
-        if not image.content_type.startswith("image/"):
-            raise HTTPException(
-            status_code=400,
-            detail="Only image files are allowed"
-        )
+    if not image.content_type.startswith("image/"):
+                raise HTTPException(
+                status_code=400,
+                detail="Only image files are allowed"
+            )
+
+        
 
     #from the start of this to .......
 
-        file_extension = image.filename.split(".")[-1]
+    file_extension = image.filename.split(".")[-1]
 
     filename = f"{uuid.uuid4()}.{file_extension}"
 

@@ -191,7 +191,7 @@ async def upload_order_item_image(
         )
 
         if not image.content_type.startswith("image/"):
-        raise HTTPException(
+            raise HTTPException(
             status_code=400,
             detail="Only image files are allowed"
         )

@@ -163,3 +163,11 @@ def delete_order_item_field_value(
     return {
         "message": "Order item field value deleted successfully"
     }
+
+@router.post("/orderitemfieldvalue/image")
+async def upload_order_item_image(
+    order_item_id: int = Form(...),
+    product_field_id: int = Form(...),
+    image: UploadFile = File(...),
+    session=Depends(get_db)
+):

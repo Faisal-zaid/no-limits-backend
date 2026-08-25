@@ -195,3 +195,16 @@ async def upload_order_item_image(
             status_code=400,
             detail="Only image files are allowed"
         )
+
+    #from the start of this to .......
+
+        file_extension = image.filename.split(".")[-1]
+
+    filename = f"{uuid.uuid4()}.{file_extension}"
+
+    file_path = os.path.join(
+        UPLOAD_FOLDER,
+        filename
+    )
+
+    #the edn of line above assigns a unique id to files 

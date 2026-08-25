@@ -8,6 +8,9 @@ from pydantic import BaseModel
 #this import allows enabling of CORS
 from fastapi.middleware.cors import CORSMiddleware
 #tells fastapi of the separate route that will communicate to it
+
+from fastapi.staticfiles import StaticFiles
+
 from routes.Category import router as category_router
 from routes.Product import router as product_router
 from routes.ProductField import router as productfield_router

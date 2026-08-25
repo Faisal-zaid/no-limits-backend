@@ -208,3 +208,6 @@ async def upload_order_item_image(
     )
 
     #the edn of line above assigns a unique id to files 
+
+    with open(file_path, "wb") as buffer:
+        buffer.write(await image.read())

@@ -189,3 +189,9 @@ async def upload_order_item_image(
             status_code=400,
             detail="This field does not accept images"
         )
+
+        if not image.content_type.startswith("image/"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only image files are allowed"
+        )

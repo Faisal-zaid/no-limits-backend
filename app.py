@@ -45,3 +45,9 @@ app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_headers=["*"],allo
 def read_root():
     return{"Hello":"world!"}
 
+
+app.mount(
+    "/uploads",
+    StaticFiles(directory="uploads"),
+    name="uploads"
+)     #if you database has /uploads/yaga   the online link will be {link}/uploads/yaga

@@ -211,3 +211,20 @@ async def upload_order_item_image(
 
     with open(file_path, "wb") as buffer:
         buffer.write(await image.read())
+
+        new_value = OrderItemFieldValue(
+        order_item_id=order_item_id,
+        product_field_id=product_field_id,
+        value=f"/uploads/{filename}"
+    )
+
+    session.add(new_value)
+
+    session.commit()
+
+    session.refresh(new_value)
+
+    return {
+        "message": "Image uploaded successfully",
+        "image_url": new_value.value
+    }    

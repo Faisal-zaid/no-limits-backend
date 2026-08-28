@@ -4,9 +4,9 @@ from pydantic import BaseModel
 import os
 import uuid #good for creating user ids, instead of generating 1,2,3,4 it can come up with better ids
 
-router = APIRouter()
+# router = APIRouter()
 
-UPLOAD_FOLDER = "uploads"
+# UPLOAD_FOLDER = "uploads"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  #creates a folder called uploads within project repo
 

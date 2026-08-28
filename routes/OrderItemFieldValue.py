@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from models import OrderItemFieldValue, get_db, ProductField
 from pydantic import BaseModel
-import os
-import uuid #good for creating user ids, instead of generating 1,2,3,4 it can come up with better ids
+import cloudinary.uploader
+
 
 router = APIRouter()
 

@@ -198,21 +198,21 @@ async def upload_order_item_image(
 
         
 
-    #from the start of this to .......
+    # #from the start of this to .......
 
-    file_extension = image.filename.split(".")[-1]
+    # file_extension = image.filename.split(".")[-1]
 
-    filename = f"{uuid.uuid4()}.{file_extension}"
+    # filename = f"{uuid.uuid4()}.{file_extension}"
 
-    file_path = os.path.join(
-        UPLOAD_FOLDER,
-        filename
-    )
+    # file_path = os.path.join(
+    #     UPLOAD_FOLDER,
+    #     filename
+    # )
 
-    #the edn of line above assigns a unique id to files 
+    # #the edn of line above assigns a unique id to files 
 
-    with open(file_path, "wb") as buffer:
-        buffer.write(await image.read())
+    # with open(file_path, "wb") as buffer:
+    #     buffer.write(await image.read())
 
         new_value = OrderItemFieldValue(
         order_item_id=order_item_id,

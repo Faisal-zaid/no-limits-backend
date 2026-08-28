@@ -50,7 +50,12 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
 def get_orders(session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive categories
-    orders=session.query(Order).all()
+    orders = (
+        session.query(Order)
+        .filter(Order.status.in_(["Pending", "Processing"]))
+        .all()
+    )
+
     return orders
 
 #retrieve a single order

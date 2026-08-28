@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 #tells fastapi of the separate route that will communicate to it
 
-from fastapi.staticfiles import StaticFiles
+# from fastapi.staticfiles import StaticFiles
 
 from routes.Category import router as category_router
 from routes.Product import router as product_router

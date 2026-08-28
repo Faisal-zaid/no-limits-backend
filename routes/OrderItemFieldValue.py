@@ -8,7 +8,7 @@ import uuid #good for creating user ids, instead of generating 1,2,3,4 it can co
 
 # UPLOAD_FOLDER = "uploads"
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)  #creates a folder called uploads within project repo
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)  #creates a folder called uploads within project repo
 
 #validation
 

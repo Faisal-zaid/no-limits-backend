@@ -227,6 +227,24 @@ if not image.content_type.startswith("image/"):
             status_code=400,
             detail="Only image files are allowed"
         )
+
+#upload to cloudinary
+
+try:
+
+        upload_result = cloudinary.uploader.upload(
+            image.file,
+            folder="nolimit/customer_customizations"
+        )
+
+except Exception as error:
+
+        print("Cloudinary upload error:", error)
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to upload image"
+        )
         new_value = OrderItemFieldValue(
         order_item_id=order_item_id,
         product_field_id=product_field_id,

@@ -216,54 +216,58 @@ async def upload_order_item_image(
 
 #check file type 
 
-if not image.content_type:
-        raise HTTPException(
-            status_code=400,
-            detail="File type could not be determined"
-        )
+    if not image.content_type:
+     raise HTTPException(
+                 status_code=400,
+                 detail="File type could not be determined"
+             )
+        
 
-if not image.content_type.startswith("image/"):
+    if not image.content_type.startswith("image/"):
         raise HTTPException(
             status_code=400,
             detail="Only image files are allowed"
         )
 
-#upload to cloudinary
+    try:
+            upload_result = cloudinary.uploader.upload(
+                    image.file,
+                    folder="nolimit/customer_customizations"
+                )
+    
 
-try:
 
-        upload_result = cloudinary.uploader.upload(
-            image.file,
-            folder="nolimit/customer_customizations"
-        )
+    
+       
 
-except Exception as error:
-
+    except Exception as error:
         print("Cloudinary upload error:", error)
-
+    
         raise HTTPException(
-            status_code=500,
-            detail="Failed to upload image"
-        )
+                status_code=500,
+                detail="Failed to upload image"
+            )
+
+        
 
  # GET CLOUDINARY URL
 
-image_url = upload_result["secure_url"]
+    image_url = upload_result["secure_url"]
 
 
-new_value = OrderItemFieldValue(
+    new_value = OrderItemFieldValue(
         order_item_id=order_item_id,
         product_field_id=product_field_id,
         value=image_url
     )
 
-session.add(new_value)
+    session.add(new_value)
 
-session.commit()
+    session.commit()
 
-session.refresh(new_value)
+    session.refresh(new_value)
 
-return {
+    return {
         "message": "Image uploaded successfully",
         "image_url": image_url,
         "value_id": new_value.id

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from models import OrderItemFieldValue, get_db, ProductField
 from pydantic import BaseModel
 import cloudinary.uploader
+import cloudinary_config
 
 
 

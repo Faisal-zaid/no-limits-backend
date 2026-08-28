@@ -113,4 +113,44 @@ def delete_order(order_id,session=Depends(get_db)):
     session.delete(order)
     session.commit()
 
-    return {"message": "Order deleted successfully"}   
+    return {"message": "Order deleted successfully"}  
+
+@router.patch("/order/{order_id}/status")
+def update_order_status(
+    order_id: int,
+    data: OrderStatusSchema,
+    session=Depends(get_db)
+):
+    order = session.query(Order).filter(
+        Order.id == order_id
+    ).first()
+
+    if not order:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+
+    allowed_statuses = [
+        "Pending",
+        "Processing",
+        "Completed",
+        "Cancelled"
+    ]
+
+    if data.status not in allowed_statuses:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid order status"
+        )
+
+    order.status = data.status
+
+    session.commit()
+    session.refresh(order)
+
+    return {
+        "message": "Order status updated successfully",
+        "order_id": order.id,
+        "status": order.status
+    } 

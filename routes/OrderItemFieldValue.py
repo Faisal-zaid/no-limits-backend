@@ -245,6 +245,12 @@ except Exception as error:
             status_code=500,
             detail="Failed to upload image"
         )
+
+ # GET CLOUDINARY URL
+
+image_url = upload_result["secure_url"]
+
+
         new_value = OrderItemFieldValue(
         order_item_id=order_item_id,
         product_field_id=product_field_id,

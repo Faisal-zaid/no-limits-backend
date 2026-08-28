@@ -58,6 +58,17 @@ def get_orders(session=Depends(get_db)):
 
     return orders
 
+@router.get("/order/history")
+def get_order_history(session=Depends(get_db)):
+
+    orders = (
+        session.query(Order)
+        .filter(Order.status.in_(["Completed", "Cancelled"]))
+        .all()
+    )
+
+    return orders
+
 #retrieve a single order
 @router.get("/order/{order_id}")#never forget the parameters inside
 def get_order(order_id, session=Depends(get_db)):

@@ -12,6 +12,8 @@ class OrderSchema(BaseModel):
     status:str
     total_price:int
 
+class OrderStatusSchema(BaseModel):
+    status: str      #separate schema for when an admin is changing status of item
 
 #create a single product 
 @router.post("/order")

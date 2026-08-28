@@ -251,13 +251,13 @@ except Exception as error:
 image_url = upload_result["secure_url"]
 
 
-        new_value = OrderItemFieldValue(
+new_value = OrderItemFieldValue(
         order_item_id=order_item_id,
         product_field_id=product_field_id,
-        value=f"/uploads/{filename}"
+        value=image_url
     )
 
-    session.add(new_value)
+session.add(new_value)
 
     session.commit()
 

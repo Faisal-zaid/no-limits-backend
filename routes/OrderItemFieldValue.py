@@ -4,6 +4,7 @@ from pydantic import BaseModel
 import cloudinary.uploader
 
 
+
 router = APIRouter()
 
 # UPLOAD_FOLDER = "uploads"

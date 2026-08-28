@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import os
 import uuid #good for creating user ids, instead of generating 1,2,3,4 it can come up with better ids
 
-# router = APIRouter()
+router = APIRouter()
 
 # UPLOAD_FOLDER = "uploads"
 
@@ -259,11 +259,13 @@ new_value = OrderItemFieldValue(
 
 session.add(new_value)
 
-    session.commit()
+session.commit()
 
-    session.refresh(new_value)
+session.refresh(new_value)
 
-    return {
+return {
         "message": "Image uploaded successfully",
-        "image_url": new_value.value
+        "image_url": image_url,
+        "value_id": new_value.id
     }    
+

@@ -214,6 +214,19 @@ async def upload_order_item_image(
     # with open(file_path, "wb") as buffer:
     #     buffer.write(await image.read())
 
+#check file type 
+
+if not image.content_type:
+        raise HTTPException(
+            status_code=400,
+            detail="File type could not be determined"
+        )
+
+if not image.content_type.startswith("image/"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only image files are allowed"
+        )
         new_value = OrderItemFieldValue(
         order_item_id=order_item_id,
         product_field_id=product_field_id,

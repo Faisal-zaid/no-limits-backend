@@ -43,10 +43,6 @@ app.include_router(orderitemfieldvalue_router)
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_headers=["*"],allow_methods=["*"])
 
-#create routes and access resources 
-@app.get("/")
-def read_root():
-    return{"Hello":"world!"}
 
 
 # app.mount(
@@ -81,3 +77,13 @@ async def custom_callback(request:Request,response,pespire:int):
             "retry_after_seconds":seconds_left
         }
     )
+
+#apply to a route using custom identifier and callback in 
+#create routes and access resources 
+@app.get("/",
+         dependencies=[
+             Depends(RateLimiter(times=2,minutes=1,identifier=get_user_id_identifier,callback=custom_callback))
+         ])
+def read_root():
+    return{"Hello":"world!"}
+

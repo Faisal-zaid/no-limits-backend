@@ -1,6 +1,6 @@
 #import fastapi class
 
-from fastapi import FastAPI, Depends # Depnds is added so records are persisted to the database
+from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
 #imports the classes from models
 from models import engine,Base ,get_db,Category, Product, ProductField, ProductFieldOption, Order, OrderItem, OrderItemFieldValue 
 #we need to do data validation using pydantic

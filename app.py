@@ -97,6 +97,14 @@ async def custom_callback(request:Request,response,pexpire:int):
 
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
 
+#setup password context(bycrpt) and secret key for signing context
+
+pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
+SECRET_KEY=''
+ALGORITHM=""
+
+#FAKe db to be removed
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

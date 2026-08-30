@@ -60,10 +60,10 @@ async def get_user_id_identifier(request:Request)->str:
         return f"user:{request.state.user.id}"
 
 #fallbacks to ip if user hasnet logged in or registered
-auth_header=request.headers.get("Authorization")
-if auth_header:
-    return f"token:{auth_header}"   
-return f"ip:{request.client.host}" 
+    auth_header=request.headers.get("Authorization")
+    if auth_header:
+        return f"token:{auth_header}"   
+    return f"ip:{request.client.host}" 
 
 #custom callback:changes the default 429 error message
 async def custom_callback(request:Request,response,pespire:int):

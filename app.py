@@ -108,7 +108,7 @@ ALGORITHM=""
 FAKE_USER_DB={
     "alice":{
         "username":"alice",
-        "hashed_password":""
+        "hashed_password":"your_bcrypt_hash_here"
     }
 }
 
@@ -124,7 +124,7 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
     password_matches=pwd_context.verify(form_data.password,user["hashed_password"])
 
     if not password_matches:
-        raise HTTPException(status_code=400, details="Incorrect password")
+        raise HTTPException(status_code=400, detail="Incorrect password")
 
     #creatte the jtw
     expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)

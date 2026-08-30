@@ -130,6 +130,13 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
     expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)
     token_data={"sub":user["username"],"exp":expire_time}
 
+    #sign with our secret key so no one can forge it
+
+encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
+
+#RETURN TO THE USER
+return {"access_token":encoded_jwt,"token_type":"bearer"}
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

@@ -91,12 +91,14 @@ async def custom_callback(request:Request,response,pexpire:int):
         }
     )
 
+oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",
          dependencies=[
              Depends(RateLimiter(times=10,minutes=1,identifier=get_user_id_identifier,callback=custom_callback))
          ])
-def read_root():
+def read_root(token:str=Depends(oauth2_scheme)):
     return{"Hello":"world!"}
 

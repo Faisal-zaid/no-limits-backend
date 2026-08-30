@@ -62,3 +62,9 @@ def read_root():
 async def get_user_id_identifier(request:Request)->str:
     if hasattr(request.state,"user")and request.state.user:
         return f"user:{request.state.user.id}"
+
+#fallbacks to ip if user hasnet logged in or registered
+auth_header=request.headers.get("Authorization")
+if auth_header:
+    return f"token:{auth_header}"   
+return f"ip:{request.client.host}" 

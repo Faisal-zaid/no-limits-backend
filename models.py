@@ -127,3 +127,13 @@ class OrderItemFieldValue(Base): # customers answer to each custom field that wa
     value=Column(Text)
     order_item=relationship("OrderItem", back_populates="values")
     product_field=relationship("ProductField")    
+
+    #user table now
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    role = Column(String, default="customer", nullable=False)

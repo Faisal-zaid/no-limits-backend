@@ -30,6 +30,16 @@ Base.metadata.create_all(bind=engine)  #this line creates a missing table suppos
 #create an instance
 app=FastAPI()
 
+@app.on_event("startup")
+async def startup():
+    redis_connection = redis.from_url(
+        "redis://localhost:6379",
+        encoding="utf-8",
+        decode_responses=True
+    )
+
+    await FastAPILimiter.init(redis_connection) #initializes redis to work with rate limiter
+
 #acts as blueprint for the route
 app.include_router(category_router)
 app.include_router(product_router)
@@ -66,7 +76,7 @@ async def get_user_id_identifier(request:Request)->str:
     return f"ip:{request.client.host}" 
 
 #custom callback:changes the default 429 error message
-async def custom_callback(request:Request,response,pespire:int):
+async def custom_callback(request:Request,response,pexpire:int):
     #pexpire is the milliseconds left till the rate limit resets
     seconds_left=max(1,pexpire//1000)
     raise HTTPException(

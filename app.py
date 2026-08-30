@@ -92,7 +92,7 @@ async def custom_callback(request:Request,response,pexpire:int):
 #create routes and access resources 
 @app.get("/",
          dependencies=[
-             Depends(RateLimiter(times=2,minutes=1,identifier=get_user_id_identifier,callback=custom_callback))
+             Depends(RateLimiter(times=10,minutes=1,identifier=get_user_id_identifier,callback=custom_callback))
          ])
 def read_root():
     return{"Hello":"world!"}

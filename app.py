@@ -54,3 +54,11 @@ def read_root():
 #     StaticFiles(directory="uploads"),
 #     name="uploads"
 # )     #if you database has /uploads/yaga   the online link will be {link}/uploads/yaga
+
+
+#rate limiter code below 
+
+#custom identifier that pulls user id from request state or headers
+async def get_user_id_identifier(request:Request)->str:
+    if hasattr(request.state,"user")and request.state.user:
+        return f"user:{request.state.user.id}"

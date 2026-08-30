@@ -13,7 +13,11 @@ from fastapi_limiter.depends import RateLimiter
 import redis.asyncio as redis   # they allow us to use ratelimiters
 
 #below are imports that allow authentication and authorization
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
+from datetime import datetime,timedelta,timezone
+from typing import Annotated
+from jose import jwt 
+from passlib.context import CryptContext  
 
 
 

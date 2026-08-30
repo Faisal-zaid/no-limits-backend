@@ -127,6 +127,8 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
         raise HTTPException(status_code=400, details="Incorrect password")
 
     #creatte the jtw
+    expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)
+    token_data={"sub":user["username"],"exp":expire_time}
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

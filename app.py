@@ -8,8 +8,11 @@ from pydantic import BaseModel
 #this import allows enabling of CORS
 from fastapi.middleware.cors import CORSMiddleware
 #tells fastapi of the separate route that will communicate to it
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
+import redis.asyncio as redis   # they allow us to use ratelimiters
 
-# from fastapi.staticfiles import StaticFiles
+
 
 from routes.Category import router as category_router
 from routes.Product import router as product_router

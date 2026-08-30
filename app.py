@@ -68,3 +68,16 @@ auth_header=request.headers.get("Authorization")
 if auth_header:
     return f"token:{auth_header}"   
 return f"ip:{request.client.host}" 
+
+#custom callback:changes the default 429 error message
+async def custom_callback(request:Request,response,pespire:int):
+    #pexpire is the milliseconds left till the rate limit resets
+    seconds_left=max(1,pexpire//1000)
+    raise HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "error":"slow down!",
+            "message":f"You have exceeded your limit, please try again in {seconds_left}seconds.",
+            "retry_after_seconds":seconds_left
+        }
+    )

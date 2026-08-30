@@ -108,9 +108,18 @@ ALGORITHM=""
 FAKE_USER_DB={
     "alice":{
         "username":"alice",
-        "hashed_password":"".
+        "hashed_password":""
     }
 }
+
+#the login route
+@app.post("/token")
+async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
+    user=FAKE_USER_DB.get(form_data.username)
+    if not user:
+        raise HTTPException(status_code=400,detail="incorrect username")
+
+    #verify 
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

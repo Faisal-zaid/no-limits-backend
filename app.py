@@ -132,10 +132,10 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
 
     #sign with our secret key so no one can forge it
 
-encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
+    encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
 
 #RETURN TO THE USER
-return {"access_token":encoded_jwt,"token_type":"bearer"}
+    return {"access_token":encoded_jwt,"token_type":"bearer"}
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

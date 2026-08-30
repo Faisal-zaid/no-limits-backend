@@ -105,6 +105,13 @@ ALGORITHM=""
 
 #FAKe db to be removed
 
+FAKE_USER_DB={
+    "alice":{
+        "username":"alice",
+        "hashed_password":"".
+    }
+}
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

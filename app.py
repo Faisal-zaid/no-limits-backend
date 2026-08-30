@@ -119,7 +119,14 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
     if not user:
         raise HTTPException(status_code=400,detail="incorrect username")
 
-    #verify 
+    #verify  password using bycrpt
+
+    password_matches=pwd_context.verify(form_data.password,user["hashed_password"])
+
+    if not password_matches:
+        raise HTTPException(status_code=400, details="Incorrect password")
+
+    #creatte the jtw
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

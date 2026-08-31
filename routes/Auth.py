@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from models import User, get_db
+from pydantic import BaseModel
 from fastapi import APIRouter,FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
@@ -29,20 +31,6 @@ pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 
 #FAKe db to be removed
 
-FAKE_USER_DB={
-    "alice":{
-        "username":"alice",
-        "email":"alice@example.com",
-        "role":"admin",
-        "hashed_password":"$2b$12$bia9eIa7AR.vpJEBK3EhbOkNtVarFw2gBR3nH6chKtE9Ivs08SKdi"
-    },
-    "bob":{
-        "username":"bob",
-        "email":"bob@example.com",
-        "role":"customer",
-        "hashed_password":"$2b$12$bia9eIa7AR.vpJEBK3EhbOkNtVarFw2gBR3nH6chKtE9Ivs08SKdi"
-    }
-}
 
 class UserSchema(BaseModel):
     username:str
@@ -53,28 +41,32 @@ class UserSchema(BaseModel):
 
 #the login route
 @router.post("/token")
-async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
-    user=FAKE_USER_DB.get(form_data.username)
-    if not user:
+async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
+                db: Annotated[Session, Depends(get_db)]):
+     user = db.query(User).filter(
+          User.username == form_data.username
+           ).first()
+     if not user:
         raise HTTPException(status_code=400,detail="incorrect username")
+     
 
     #verify  password using bycrpt
 
-    password_matches=pwd_context.verify(form_data.password,user["hashed_password"])
+     password_matches=pwd_context.verify(form_data.password,user["hashed_password"])
 
-    if not password_matches:
-        raise HTTPException(status_code=400, detail="Incorrect password")
+     if not password_matches:
+            raise HTTPException(status_code=400, detail="Incorrect password")
 
     #creatte the jtw
-    expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)
-    token_data={"sub":user["username"],"exp":expire_time}
+     expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)
+     token_data={"sub":user["username"],"exp":expire_time}
 
     #sign with our secret key so no one can forge it
 
-    encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
+     encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
 
 #RETURN TO THE USER
-    return {"access_token":encoded_jwt,"token_type":"bearer"}
+     return {"access_token":encoded_jwt,"token_type":"bearer"}
 
 #dependency function
 async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):

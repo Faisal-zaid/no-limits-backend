@@ -189,17 +189,17 @@ async def read_users_me(current_user:Annotated[dict,
 
 #authorization dependancy helper
 class RoleChecker:
-    def__init__(self, allowed_roles:list[str]):
+    def __init__(self, allowed_roles:list[str]):
         self.allowed_roles=allowed_roles
-    def__call__(self,current_user:Annotated[dict,
+    def __call__(self,current_user:Annotated[dict,
                                             Depends(get_current_user)]):
     #checks if user role is allowed 
-    if current_user.get("role")not in self.allowed_roles:
-        raise HTTPException(
+        if current_user.get("role")not in self.allowed_roles:
+            raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             details="No permission to access"
         )
-    return current_user
+        return current_user
 
 #create specific permission gates
 allow_admin=RoleChecker(["admin"])

@@ -205,6 +205,11 @@ class RoleChecker:
 allow_admin=RoleChecker(["admin"])
 allow_any_user=RoleChecker(["admin","cutomer"])
 
+#endpoints with authorization
+@app.get('/dashboard')
+async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
+    return {"message":f"welcome to your dashboard,{current_user['username']}!"}
+
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

@@ -22,7 +22,7 @@ from jose import jwt ,JWTError
 from passlib.context import CryptContext  
 
 
-
+from routes.Auth import router as auth_router
 from routes.Category import router as category_router
 from routes.Product import router as product_router
 from routes.ProductField import router as productfield_router
@@ -53,6 +53,7 @@ async def startup():
     await FastAPILimiter.init(redis_connection) #initializes redis to work with rate limiter
 
 #acts as blueprint for the route
+app.include_router(auth_router)
 app.include_router(category_router)
 app.include_router(product_router)
 app.include_router(order_router)

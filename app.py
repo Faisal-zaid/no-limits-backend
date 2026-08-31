@@ -210,6 +210,10 @@ allow_any_user=RoleChecker(["admin","cutomer"])
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
     return {"message":f"welcome to your dashboard,{current_user['username']}!"}
 
+@app.get('/admin/settings')
+async def view_admin_settings(current_user:Annotated[dict,Depends(allow_admin)]):
+    return {"message":"welcome to admin panel"}
+
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

@@ -197,13 +197,13 @@ class RoleChecker:
         if current_user.get("role")not in self.allowed_roles:
             raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            details="No permission to access"
+            detail="No permission to access"
         )
         return current_user
 
 #create specific permission gates
 allow_admin=RoleChecker(["admin"])
-allow_any_user=RoleChecker(["admin","cutomer"])
+allow_any_user=RoleChecker(["admin","customer"])
 
 #endpoints with authorization
 @app.get('/dashboard')

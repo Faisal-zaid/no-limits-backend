@@ -52,7 +52,7 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
 
     #verify  password using bycrpt
 
-     password_matches=pwd_context.verify(form_data.password,user["hashed_password"])
+     password_matches=pwd_context.verify(form_data.password,user.hashed_password)
 
      if not password_matches:
             raise HTTPException(status_code=400, detail="Incorrect password")
@@ -69,7 +69,8 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
      return {"access_token":encoded_jwt,"token_type":"bearer"}
 
 #dependency function
-async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
+async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)],
+                           db: Annotated[Session, Depends(get_db)]):
     credentials_exception=HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="could not validate credentials",
@@ -86,7 +87,10 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
         raise credentials_exception
 
     #look up the user in the db using username from token
-    user=FAKE_USER_DB.get(username)
+    user = db.query(User).filter(
+        User.username == username
+    ).first()
+    
     if user is None:
         raise credentials_exception
     return user

@@ -164,6 +164,13 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
         raise credentials_exception
     return user
 
+#a protected endpoint
+@app.get("/users/me")
+async def read_users_me(current_user:Annotated[dict,
+                                               Depends(get_current_user)]):
+    #this code only runs if token was valid
+    return current_user
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

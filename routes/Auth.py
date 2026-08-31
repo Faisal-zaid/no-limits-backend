@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
+from fastapi import APIRouter,FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
 from datetime import datetime,timedelta,timezone
@@ -9,6 +9,9 @@ from jose import jwt ,JWTError
 from passlib.context import CryptContext  
 
 load_dotenv(override=True)
+
+router = APIRouter()
+
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM="HS256"
@@ -42,7 +45,7 @@ FAKE_USER_DB={
 }
 
 #the login route
-@app.post("/token")
+@router.post("/token")
 async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
     user=FAKE_USER_DB.get(form_data.username)
     if not user:
@@ -90,7 +93,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
     return user
 
 #a protected endpoint
-@app.get("/users/me")
+@router.get("/users/me")
 async def read_users_me(current_user:Annotated[dict,
                                                Depends(get_current_user)]):
     #this code only runs if token was valid
@@ -115,10 +118,10 @@ allow_admin=RoleChecker(["admin"])
 allow_any_user=RoleChecker(["admin","customer"])
 
 #endpoints with authorization
-@app.get('/dashboard')
+@router.get('/dashboard')
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
     return {"message":f"welcome to your dashboard,{current_user['username']}!"}
 
-@app.get('/admin/settings')
+@router.get('/admin/settings')
 async def view_admin_settings(current_user:Annotated[dict,Depends(allow_admin)]):
     return {"message":"welcome to admin panel"}

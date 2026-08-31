@@ -1,5 +1,4 @@
-import os
-from dotenv import load_dotenv
+
 #import fastapi class
 
 from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
@@ -27,7 +26,7 @@ from routes.checkout import router as checkout_router
 from routes.OrderItem import router as orderitem_router
 from routes.OrderItemFieldValue import router as orderitemfieldvalue_router
 
-load_dotenv(override=True)
+
 
 Base.metadata.create_all(bind=engine)  #this line creates a missing table suppose the backend is in production
 

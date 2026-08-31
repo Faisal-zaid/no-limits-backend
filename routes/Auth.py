@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
 from datetime import datetime,timedelta,timezone
 from typing import Annotated
 from jose import jwt ,JWTError
 from passlib.context import CryptContext  
+
+load_dotenv(override=True)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM="HS256"

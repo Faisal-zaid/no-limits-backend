@@ -95,13 +95,16 @@ async def custom_callback(request:Request,response,pexpire:int):
         }
     )
 
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM="HS256"
+
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
 
 #setup password context(bycrpt) and secret key for signing context
 
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
-SECRET_KEY=''
-ALGORITHM=""
+
 
 #FAKe db to be removed
 

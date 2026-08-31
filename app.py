@@ -111,6 +111,7 @@ pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 FAKE_USER_DB={
     "alice":{
         "username":"alice",
+        "email":"alice@example.com",
         "hashed_password":"your_bcrypt_hash_here"
     }
 }

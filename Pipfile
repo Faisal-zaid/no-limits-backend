@@ -8,6 +8,8 @@ sqlalchemy = "*"
 alembic = "*"
 fastapi = {extras = ["standard"], version = "*"}
 psycopg2-binary = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
+bcrypt = "==4.3.0"
 
 [dev-packages]
 

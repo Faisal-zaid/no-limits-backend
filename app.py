@@ -32,6 +32,7 @@ from routes.checkout import router as checkout_router
 from routes.OrderItem import router as orderitem_router
 from routes.OrderItemFieldValue import router as orderitemfieldvalue_router
 
+load_dotenv(override=True)
 
 Base.metadata.create_all(bind=engine)  #this line creates a missing table suppose the backend is in production
 
@@ -39,7 +40,7 @@ Base.metadata.create_all(bind=engine)  #this line creates a missing table suppos
 #create an instance
 app=FastAPI()
 
-load_dotenv(override=True)
+
 
 @app.on_event("startup")
 async def startup():
@@ -109,6 +110,10 @@ oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
 
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 
+# hashed_password = pwd_context.hash(password)
+
+# print(hashed_password)
+
 
 #FAKe db to be removed
 
@@ -116,7 +121,7 @@ FAKE_USER_DB={
     "alice":{
         "username":"alice",
         "email":"alice@example.com",
-        "hashed_password":"your_bcrypt_hash_here"
+        "hashed_password":"$2b$12$bia9eIa7AR.vpJEBK3EhbOkNtVarFw2gBR3nH6chKtE9Ivs08SKdi"
     }
 }
 

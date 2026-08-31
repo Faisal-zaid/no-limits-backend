@@ -158,6 +158,12 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
         #if the token is altered expired or fake it will fail here
         raise credentials_exception
 
+    #look up the user in the db using username from token
+    user=FAKE_USER_DB.get(username)
+    if user is None:
+        raise credentials_exception
+    return user
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

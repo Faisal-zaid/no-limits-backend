@@ -187,6 +187,21 @@ async def read_users_me(current_user:Annotated[dict,
     #this code only runs if token was valid
     return current_user
 
+#authorization dependancy helper
+class RoleChecker:
+    def__init__(self, allowed_roles:list[str]):
+        self.allowed_roles=allowed_roles
+    def__call__(self,current_user:Annotated[dict,
+                                            Depends(get_current_user)]):
+    #checks if user role is allowed 
+    if current_user.get("role")not in self.allowed_roles:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            details="No permission to access"
+        )
+    return current_user
+
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

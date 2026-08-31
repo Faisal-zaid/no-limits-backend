@@ -1,3 +1,4 @@
+import os
 #import fastapi class
 
 from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
@@ -144,8 +145,8 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
 #dependency function
 async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
     credentials_exception=HTTPException(
-        status_code=status.HTTP_401_UNAUTHORISED,
-        details="could not validate credentials",
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="could not validate credentials",
         headers={"WWW-Authenticate":"Bearer"}
     )
     try:

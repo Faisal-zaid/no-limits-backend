@@ -121,6 +121,13 @@ FAKE_USER_DB={
     "alice":{
         "username":"alice",
         "email":"alice@example.com",
+        "role":"admin",
+        "hashed_password":"$2b$12$bia9eIa7AR.vpJEBK3EhbOkNtVarFw2gBR3nH6chKtE9Ivs08SKdi"
+    },
+    "bob":{
+        "username":"bob",
+        "email":"bob@example.com",
+        "role":"customer",
         "hashed_password":"$2b$12$bia9eIa7AR.vpJEBK3EhbOkNtVarFw2gBR3nH6chKtE9Ivs08SKdi"
     }
 }

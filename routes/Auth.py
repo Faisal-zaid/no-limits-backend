@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
 from datetime import datetime,timedelta,timezone

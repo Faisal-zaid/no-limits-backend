@@ -104,6 +104,6 @@ async def custom_callback(request:Request,response,pexpire:int):
          dependencies=[
              Depends(RateLimiter(times=10,minutes=1,identifier=get_user_id_identifier,callback=custom_callback))
          ])
-def read_root(token:str=Depends(oauth2_scheme)):
+def read_root():
     return{"Hello":"world!"}
 

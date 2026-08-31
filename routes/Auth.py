@@ -9,6 +9,7 @@ from datetime import datetime,timedelta,timezone
 from typing_extensions import Annotated
 from jose import jwt ,JWTError
 from passlib.context import CryptContext  
+from typing import List
 
 from sqlalchemy.orm import Session
 
@@ -106,7 +107,7 @@ async def read_users_me(current_user:Annotated[User,
 
 #authorization dependancy helper
 class RoleChecker:
-    def __init__(self, allowed_roles:list[str]):
+    def __init__(self, allowed_roles:List[str]):
         self.allowed_roles=allowed_roles
     def __call__(self,current_user:Annotated[dict,
                                             Depends(get_current_user)]):

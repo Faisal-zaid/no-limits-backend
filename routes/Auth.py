@@ -6,9 +6,11 @@ from fastapi import APIRouter,FastAPI, Depends, Request,HTTPException,status # D
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
 from datetime import datetime,timedelta,timezone
-from typing import Annotated
+from typing_extensions import Annotated
 from jose import jwt ,JWTError
 from passlib.context import CryptContext  
+
+from sqlalchemy.orm import Session
 
 load_dotenv(override=True)
 
@@ -59,7 +61,7 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
 
     #creatte the jtw
      expire_time=datetime.now(timezone.utc)+timedelta(minutes=15)
-     token_data={"sub":user["username"],"exp":expire_time}
+     token_data={"sub":user.username,"exp":expire_time}
 
     #sign with our secret key so no one can forge it
 
@@ -97,7 +99,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)],
 
 #a protected endpoint
 @router.get("/users/me")
-async def read_users_me(current_user:Annotated[dict,
+async def read_users_me(current_user:Annotated[User,
                                                Depends(get_current_user)]):
     #this code only runs if token was valid
     return current_user

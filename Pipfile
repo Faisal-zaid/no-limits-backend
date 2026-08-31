@@ -8,8 +8,10 @@ sqlalchemy = "*"
 alembic = "*"
 fastapi = {extras = ["standard"], version = "*"}
 psycopg2-binary = "*"
-passlib = {extras = ["bcrypt"], version = "*"}
 bcrypt = "==4.3.0"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+typing-extensions = "*"
 
 [dev-packages]
 

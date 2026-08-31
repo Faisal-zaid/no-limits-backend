@@ -201,6 +201,10 @@ class RoleChecker:
         )
     return current_user
 
+#create specific permission gates
+allow_admin=RoleChecker(["admin"])
+allow_any_user=RoleChecker(["admin","cutomer"])
+
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

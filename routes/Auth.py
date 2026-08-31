@@ -114,9 +114,7 @@ class RoleChecker:
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No permission to access"
         )
-        return {
-    "message": f"welcome to your dashboard,{current_user.username}!"
-}
+        return current_user
 
 #create specific permission gates
 allow_admin=RoleChecker(["admin"])
@@ -125,7 +123,9 @@ allow_any_user=RoleChecker(["admin","customer"])
 #endpoints with authorization
 @router.get('/dashboard')
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
-    return {"message":f"welcome to your dashboard,{current_user['username']}!"}
+    return {
+    "message": f"welcome to your dashboard,{current_user.username}!"
+}
 
 @router.get('/admin/settings')
 async def view_admin_settings(current_user:Annotated[dict,Depends(allow_admin)]):

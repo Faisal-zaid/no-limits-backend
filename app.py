@@ -149,6 +149,14 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
         headers={"WWW-Authenticate":"Bearer"}
     )
     try:
+        #decode token using secret key
+        payload=jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+        username:str=payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        #if the token is altered expired or fake it will fail here
+        raise credentials_exception
 
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 

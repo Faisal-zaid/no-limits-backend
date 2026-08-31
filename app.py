@@ -141,6 +141,15 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):
 #RETURN TO THE USER
     return {"access_token":encoded_jwt,"token_type":"bearer"}
 
+#dependency function
+async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)]):
+    credentials_exception=HTTPException(
+        status_code=status.HTTP_401_UNAUTHORISED,
+        details="could not validate credentials",
+        headers={"WWW-Authenticate":"Bearer"}
+    )
+    try:
+
 #apply to a route using custom identifier and callback in 
 #create routes and access resources 
 @app.get("/",

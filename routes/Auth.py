@@ -90,7 +90,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)],
     user = db.query(User).filter(
         User.username == username
     ).first()
-    
+
     if user is None:
         raise credentials_exception
     return user
@@ -109,12 +109,14 @@ class RoleChecker:
     def __call__(self,current_user:Annotated[dict,
                                             Depends(get_current_user)]):
     #checks if user role is allowed 
-        if current_user.get("role")not in self.allowed_roles:
+        if current_user.role not in self.allowed_roles:
             raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No permission to access"
         )
-        return current_user
+        return {
+    "message": f"welcome to your dashboard,{current_user.username}!"
+}
 
 #create specific permission gates
 allow_admin=RoleChecker(["admin"])

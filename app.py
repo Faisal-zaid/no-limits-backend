@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 #import fastapi class
 
 from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
@@ -37,6 +38,8 @@ Base.metadata.create_all(bind=engine)  #this line creates a missing table suppos
 
 #create an instance
 app=FastAPI()
+
+load_dotenv(override=True)
 
 @app.on_event("startup")
 async def startup():

@@ -44,6 +44,13 @@ FAKE_USER_DB={
     }
 }
 
+class UserSchema(BaseModel):
+    username:str
+    email:str
+    hashed_password:str
+    role:str
+    
+
 #the login route
 @router.post("/token")
 async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()]):

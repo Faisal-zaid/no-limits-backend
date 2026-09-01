@@ -154,7 +154,7 @@ allow_any_user=RoleChecker(["admin","customer"])
 
 #endpoint for promoting a user to admin
 
-router.post("/admin/users/{username}/promote")
+@router.post("/admin/users/{username}/promote")
 async def promote_user_to_admin(
     username: str,
     current_user: Annotated[User, Depends(allow_admin)],

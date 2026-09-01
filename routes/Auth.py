@@ -43,6 +43,12 @@ class UserSchema(BaseModel):
     email:str
     hashed_password:str
     role:str
+
+class RegisterSchema(BaseModel):
+    username: str
+    email: str
+    password: str
+
     
 
 #the login route

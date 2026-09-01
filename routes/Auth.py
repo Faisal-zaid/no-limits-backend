@@ -164,3 +164,53 @@ async def view_admin_settings(current_user:Annotated[dict,Depends(allow_admin)])
 async def logout(response: Response):
     response.delete_cookie("access_token")
     return {"message": "logged out successfully"}
+
+
+@router.post("/register")
+async def register(
+    user_data: RegisterSchema,
+    db: Annotated[Session, Depends(get_db)]
+):
+    # Check if username already exists
+    existing_username = db.query(User).filter(
+        User.username == user_data.username
+    ).first()
+
+    if existing_username:
+        raise HTTPException(
+            status_code=400,
+            detail="Username already exists"
+        )
+
+    # Check if email already exists
+    existing_email = db.query(User).filter(
+        User.email == user_data.email
+    ).first()
+
+    if existing_email:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already exists"
+        )
+
+    # Hash the password before storing it
+    hashed_password = pwd_context.hash(user_data.password)
+
+    # Create user
+    new_user = User(
+        username=user_data.username,
+        email=user_data.email,
+        hashed_password=hashed_password,
+        role="customer"
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {
+        "message": "User registered successfully",
+        "username": new_user.username,
+        "email": new_user.email,
+        "role": new_user.role
+    }

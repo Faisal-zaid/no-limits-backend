@@ -47,7 +47,7 @@ class UserSchema(BaseModel):
 
 #the login route
 @router.post("/token")
-async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
+async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
                 db: Annotated[Session, Depends(get_db)]):
      user = db.query(User).filter(
           User.username == form_data.username
@@ -70,6 +70,15 @@ async def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
     #sign with our secret key so no one can forge it
 
      encoded_jwt=jwt.encode(token_data, SECRET_KEY,algorithm=ALGORITHM)
+
+     response.set_cookie(
+        key="access_token",
+        value=encoded_jwt,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=900
+    )  #response.set_cookie i have added to allow cookies to store jwt, in login route above i also added 'response: Response'
 
 #RETURN TO THE USER
      return {"access_token":encoded_jwt,"token_type":"bearer"}

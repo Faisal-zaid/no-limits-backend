@@ -82,7 +82,7 @@ async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
         value=encoded_jwt,
         httponly=True,
         secure=True,
-        samesite="lax",
+        samesite="none",
         max_age=900
     )  #response.set_cookie i have added to allow cookies to store jwt, in login route above i also added 'response: Response'
 

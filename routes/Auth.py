@@ -11,6 +11,9 @@ from jose import jwt ,JWTError
 from passlib.context import CryptContext  
 from typing import List
 
+from fastapi.responses import JSONResponse  #FastAPI puts the JWT into an HttpOnly cookie.
+
+
 from sqlalchemy.orm import Session
 
 load_dotenv(override=True)

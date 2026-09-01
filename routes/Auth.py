@@ -86,6 +86,9 @@ async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
 #dependency function
 async def get_current_user(request: Request,
                            db: Annotated[Session, Depends(get_db)]):
+
+    token = request.cookies.get("access_token")
+
     credentials_exception=HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="could not validate credentials",
@@ -145,3 +148,8 @@ async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
 @router.get('/admin/settings')
 async def view_admin_settings(current_user:Annotated[dict,Depends(allow_admin)]):
     return {"message":"welcome to admin panel"}
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie("access_token")
+    return {"message": "logged out successfully"}

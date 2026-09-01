@@ -84,7 +84,7 @@ async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
      return {"message":"login successful"}
 
 #dependency function
-async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)],
+async def get_current_user(request: Request,
                            db: Annotated[Session, Depends(get_db)]):
     credentials_exception=HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

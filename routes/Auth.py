@@ -152,6 +152,44 @@ class RoleChecker:
 allow_admin=RoleChecker(["admin"])
 allow_any_user=RoleChecker(["admin","customer"])
 
+#endpoint for promoting a user to admin
+
+router.post("/admin/users/{username}/promote")
+async def promote_user_to_admin(
+    username: str,
+    current_user: Annotated[User, Depends(allow_admin)],
+    db: Annotated[Session, Depends(get_db)]
+):
+    # Find the user we want to promote
+    user = db.query(User).filter(
+        User.username == username
+    ).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    # Check if they are already an admin
+    if user.role == "admin":
+        raise HTTPException(
+            status_code=400,
+            detail="User is already an admin"
+        )
+
+    # Promote user
+    user.role = "admin"
+
+    db.commit()
+    db.refresh(user)
+
+    return {
+        "message": f"{user.username} is now an admin",
+        "username": user.username,
+        "role": user.role
+    }
+
 #endpoints with authorization
 @router.get('/dashboard')
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):

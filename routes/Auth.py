@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from models import User, get_db
 from pydantic import BaseModel
-from fastapi import APIRouter,FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
+from fastapi import APIRouter,FastAPI, Depends, Request,HTTPException,status,Response # Depnds is added so records are persisted to the database
 #below are imports that allow authentication and authorization
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm   #fastapi uses this request form to safely read login details
 from datetime import datetime,timedelta,timezone
@@ -81,7 +81,7 @@ async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
     )  #response.set_cookie i have added to allow cookies to store jwt, in login route above i also added 'response: Response'
 
 #RETURN TO THE USER
-     return {"access_token":encoded_jwt,"token_type":"bearer"}
+     return {"message":"login successful"}
 
 #dependency function
 async def get_current_user(token:Annotated[str,Depends(oauth2_scheme)],

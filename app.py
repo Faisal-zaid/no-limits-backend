@@ -34,12 +34,12 @@ Base.metadata.create_all(bind=engine)  #this line creates a missing table suppos
 #create an instance
 app=FastAPI()
 
-
+REDIS_URL = os.getenv("REDIS_URL")
 
 @app.on_event("startup")
 async def startup():
     redis_connection = redis.from_url(
-        "redis://localhost:6379",
+        REDIS_URL,
         encoding="utf-8",
         decode_responses=True
     )

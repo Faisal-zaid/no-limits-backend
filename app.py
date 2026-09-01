@@ -58,7 +58,7 @@ app.include_router(orderitem_router)
 app.include_router(orderitemfieldvalue_router)
 
 #allow access from all servers
-app.add_middleware(CORSMiddleware,  allow_origins=["*"],allow_headers=["*"],allow_methods=["*"])
+app.add_middleware(CORSMiddleware,  allow_origins=["http://localhost:3000",],allow_credentials=True,allow_headers=["*"],allow_methods=["*"])
 
 
 

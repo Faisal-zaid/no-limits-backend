@@ -24,7 +24,7 @@ router = APIRouter()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM="HS256"
 
-oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")  #unused since i switched to http
 
 #setup password context(bycrpt) and secret key for signing context
 

@@ -95,6 +95,9 @@ async def get_current_user(request: Request,
 
     token = request.cookies.get("access_token")
 
+    print("COOKIES:", request.cookies)
+    print("TOKEN:", token)
+
     credentials_exception=HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="could not validate credentials",

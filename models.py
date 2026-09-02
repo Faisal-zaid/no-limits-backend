@@ -96,6 +96,11 @@ class Order(Base): #stores sinformation about a customers order
     total_price=Column(Integer)
     created_at=Column(DateTime, default=datetime.now) #from datetime import datetime - this is what makes that line possible
 
+    payment_status=Column(String, default="Pending")
+    checkout_request_id=Column(String, nullable=True)
+    merchant_request_id=Column(String, nullable=True)
+    mpesa_receipt_number=Column(String, nullable=True)
+
     items=relationship(
         "OrderItem",
         back_populates="order",

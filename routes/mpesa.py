@@ -52,3 +52,19 @@ async def get_mpesa_access_token():
     data = response.json()
 
     return data["access_token"]
+
+#generate stk password
+
+def generate_password(timestamp: str):
+
+    data_to_encode = (
+        f"{MPESA_SHORTCODE}"
+        f"{MPESA_PASSKEY}"
+        f"{timestamp}"
+    )
+
+    password = base64.b64encode(
+        data_to_encode.encode()
+    ).decode()
+
+    return password

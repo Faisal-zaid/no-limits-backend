@@ -17,3 +17,38 @@ MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
 MPESA_CALLBACK_URL = os.getenv("MPESA_CALLBACK_URL")
 
 MPESA_BASE_URL = "https://sandbox.safaricom.co.ke"
+
+
+#get mpesa access token
+async def get_mpesa_access_token():
+
+    credentials = (
+        f"{MPESA_CONSUMER_KEY}:{MPESA_CONSUMER_SECRET}"
+    )
+
+    encoded_credentials = base64.b64encode(
+        credentials.encode()
+    ).decode()
+
+    headers = {
+        "Authorization": f"Basic {encoded_credentials}"
+    }
+
+    async with httpx.AsyncClient() as client:
+
+        response = await client.get(
+            f"{MPESA_BASE_URL}/oauth/v1/generate?grant_type=client_credentials",
+            headers=headers
+        )
+
+    if response.status_code != 200:
+        print("MPESA TOKEN ERROR:", response.text)
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not authenticate with M-Pesa"
+        )
+
+    data = response.json()
+
+    return data["access_token"]

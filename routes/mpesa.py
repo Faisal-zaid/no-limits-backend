@@ -72,3 +72,58 @@ def generate_password(timestamp: str):
 #generate time stamp
 
 timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+
+#create stk push endpoint
+
+@router.post("/mpesa/stkpush")
+async def stk_push(
+    phone_number: str,
+    amount: int
+):
+
+    access_token = await get_mpesa_access_token()
+
+    timestamp = datetime.now().strftime(
+        "%Y%m%d%H%M%S"
+    )
+
+    password = generate_password(timestamp)
+
+    payload = {
+        "BusinessShortCode": MPESA_SHORTCODE,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone_number,
+        "PartyB": MPESA_SHORTCODE,
+        "PhoneNumber": phone_number,
+        "CallBackURL": MPESA_CALLBACK_URL,
+        "AccountReference": "NoLimits",
+        "TransactionDesc": "No Limits Order"
+    }
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    async with httpx.AsyncClient() as client:
+
+        response = await client.post(
+            f"{MPESA_BASE_URL}/mpesa/stkpush/v1/processrequest",
+            json=payload,
+            headers=headers
+        )
+
+    data = response.json()
+
+    print("MPESA STK RESPONSE:", data)
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to initiate M-Pesa payment"
+        )
+
+    return data

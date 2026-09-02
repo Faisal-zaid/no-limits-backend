@@ -68,3 +68,7 @@ def generate_password(timestamp: str):
     ).decode()
 
     return password
+
+#generate time stamp
+
+timestamp = datetime.now().strftime("%Y%m%d%H%M%S")

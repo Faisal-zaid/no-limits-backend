@@ -17,3 +17,6 @@ typing-extensions==4.13.2
 # Redis / rate limiting
 redis==4.6.0
 fastapi-limiter==0.1.5
+
+#mpesa
+httpx

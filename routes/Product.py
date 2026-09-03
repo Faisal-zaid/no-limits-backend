@@ -21,11 +21,19 @@ class ProductSchema(BaseModel):
 def create_product(name:str=Form(...),
                    category_id:int=Form(...),
                    base_price:int=Form(...),
+                   stock: int = Form(...),
                    description:str=Form(...),
                    image:UploadFile=File(...),
                    session=Depends(get_db)):
     #this is where i will come to use sqlalchemy to create records
     #now the actual code to create records
+ # Check stock
+    if stock < 0:
+        return {
+            "message": "Stock cannot be negative."
+        }
+
+
     existing=session.query(Product).filter(Product.name==name).first()
     
     if existing :

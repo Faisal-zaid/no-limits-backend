@@ -1,6 +1,5 @@
-
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 from models import (
@@ -14,10 +13,6 @@ from models import (
 router = APIRouter()
 
 
-# -----------------------------
-# SCHEMAS
-# -----------------------------
-
 class FieldValueSchema(BaseModel):
     product_field_id: int
     value: str
@@ -26,7 +21,7 @@ class FieldValueSchema(BaseModel):
 class CheckoutItemSchema(BaseModel):
     product_id: int
     quantity: int
-    fields: List[FieldValueSchema] = []
+    fields: List[FieldValueSchema] = Field(default_factory=list)
 
 
 class CheckoutSchema(BaseModel):
@@ -36,32 +31,25 @@ class CheckoutSchema(BaseModel):
     items: List[CheckoutItemSchema]
 
 
-# -----------------------------
-# CHECKOUT
-# -----------------------------
-
 @router.post("/checkout")
 def checkout(
     data: CheckoutSchema,
     session=Depends(get_db)
 ):
 
-    # -----------------------------
-    # VALIDATE CART
-    # -----------------------------
-
+    # 1. Make sure cart isn't empty
     if not data.items:
         raise HTTPException(
             status_code=400,
             detail="Your cart is empty."
         )
 
-    # -----------------------------
-    # VALIDATE ALL PRODUCTS FIRST
-    # -----------------------------
-
     total_price = 0
     products = {}
+
+    # 
+    # 2. CHECK PRODUCTS AND STOCK FIRST
+    # 
 
     for item in data.items:
 
@@ -71,14 +59,27 @@ def checkout(
                 detail="Quantity must be greater than zero."
             )
 
-        product = session.query(Product).filter(
-            Product.id == item.product_id
-        ).first()
+        product = (
+            session.query(Product)
+            .filter(Product.id == item.product_id)
+            .first()
+        )
 
         if product is None:
             raise HTTPException(
                 status_code=404,
                 detail=f"Product with id {item.product_id} not found."
+            )
+
+        # Check stock
+        if product.stock < item.quantity:
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"Not enough stock for {product.name}. "
+                    f"Available: {product.stock}, "
+                    f"requested: {item.quantity}."
+                )
             )
 
         if product.base_price is None:
@@ -89,16 +90,13 @@ def checkout(
 
         products[item.product_id] = product
 
-        # IMPORTANT:
-        # Price comes from our database,
-        # NOT from the frontend.
         subtotal = product.base_price * item.quantity
-
         total_price += subtotal
 
-    # -----------------------------
-    # CREATE ORDER
-    # -----------------------------
+
+    
+    # 3. CREATE THE ORDER
+    
 
     order = Order(
         customer_name=data.customer_name,
@@ -111,14 +109,16 @@ def checkout(
     session.add(order)
     session.flush()
 
-    # -----------------------------
-    # CREATE ORDER ITEMS
-    # -----------------------------
+
+    
+    # 4. CREATE ORDER ITEMS AND REDUCE STOCK
+    
 
     for item in data.items:
 
         product = products[item.product_id]
 
+        # Create order item
         order_item = OrderItem(
             order_id=order.id,
             product_id=product.id,
@@ -128,10 +128,8 @@ def checkout(
         session.add(order_item)
         session.flush()
 
-        # -----------------------------
-        # SAVE CUSTOM VALUES
-        # -----------------------------
 
+        # Save custom field values
         for field in item.fields:
 
             answer = OrderItemFieldValue(
@@ -142,9 +140,14 @@ def checkout(
 
             session.add(answer)
 
-    # -----------------------------
-    # COMMIT EVERYTHING
-    # -----------------------------
+
+        # REDUCE PRODUCT STOCK
+        product.stock -= item.quantity
+
+
+    # -----------------------------------------
+    # 5. SAVE EVERYTHING
+    # -----------------------------------------
 
     try:
         session.commit()
@@ -154,19 +157,20 @@ def checkout(
 
         raise HTTPException(
             status_code=500,
-            detail="Could not create order."
+            detail="Could not complete checkout."
         )
+
 
     session.refresh(order)
 
-    # -----------------------------
-    # RETURN ORDER INFORMATION
-    # -----------------------------
+
+    
+    #  RETURN RESULT
+    
 
     return {
-        "message": "Order created successfully.",
+        "message": "Order placed successfully.",
         "order_id": order.id,
         "total_price": order.total_price,
         "status": order.status
     }
-

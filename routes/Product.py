@@ -45,6 +45,7 @@ def create_product(name:str=Form(...),
     name=name,
     category_id=category_id,
     base_price=base_price,
+    stock=stock,
     description=description,
     image=result["secure_url"]
 ) #creates the instance of the category class
@@ -55,7 +56,10 @@ def create_product(name:str=Form(...),
     #then commits the transaction
     session.commit()
     
-    return{"message":"Product created successfully"}
+    return{"message": "Product created successfully",
+        "product_id": new_product.id,
+        "name": new_product.name,
+        "stock": new_product.stock}
 
     # else:
     #     return {"message":"Product already exists"}

@@ -109,6 +109,7 @@ def update_product(product_id:int,
     product.name=name
     product.category_id=category_id
     product.base_price=base_price
+    product.stock = stock
     product.description=description
     if image:
         result=cloudinary.uploader.upload(image.file)
@@ -119,7 +120,9 @@ def update_product(product_id:int,
     session.commit()  
     session.refresh(product)
 
-    return{"message":"product updated successfully"}      
+    return{"message": "Product updated successfully",
+        "product_id": product.id,
+        "stock": product.stock}      
 
 #delete a single product
 @router.delete("/product/{product_id}")

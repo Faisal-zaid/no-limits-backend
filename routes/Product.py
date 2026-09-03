@@ -84,6 +84,7 @@ def update_product(product_id:int,
                    name:str=Form(...),
                    category_id:int=Form(...),
                    base_price:int=Form(...),
+                    stock: int = Form(...),
                    description:str=Form(...),
                    image: Optional[UploadFile] = File(None),
                    session=Depends(get_db)):
@@ -91,6 +92,11 @@ def update_product(product_id:int,
 
     if not Product:
         return{"message":"Product not found"}
+
+    if stock < 0:
+        return {
+            "message": "Stock cannot be negative."
+        }    
     
     # #check to prevent duplicate values
     # if data.name:

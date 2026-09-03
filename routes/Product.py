@@ -14,6 +14,7 @@ class ProductSchema(BaseModel):
     category_id:int
     base_price:int
     description:str
+    stock: int
     image:str
 #create a single product 
 @router.post("/product")

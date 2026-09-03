@@ -90,7 +90,7 @@ def update_product(product_id:int,
                    session=Depends(get_db)):
     product=session.query(Product).filter(Product.id==product_id).first()
 
-    if not Product:
+    if not product:
         return{"message":"Product not found"}
 
     if stock < 0:

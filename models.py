@@ -49,6 +49,7 @@ class Product(Base):# stores the services or products under a category
     name=Column(Text, nullable=False)
     description=Column(Text)
     base_price=Column(Integer)
+    stock=Column(Integer, default=0, nullable=False)
     image=Column(String)
 
     category=relationship("Category", back_populates="products")

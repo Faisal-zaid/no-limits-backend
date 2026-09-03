@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import List
 
@@ -40,41 +41,84 @@ class CheckoutSchema(BaseModel):
 # -----------------------------
 
 @router.post("/checkout")
-def checkout(data: CheckoutSchema, session=Depends(get_db)):
+def checkout(
+    data: CheckoutSchema,
+    session=Depends(get_db)
+):
+
+    # -----------------------------
+    # VALIDATE CART
+    # -----------------------------
+
+    if not data.items:
+        raise HTTPException(
+            status_code=400,
+            detail="Your cart is empty."
+        )
+
+    # -----------------------------
+    # VALIDATE ALL PRODUCTS FIRST
+    # -----------------------------
 
     total_price = 0
+    products = {}
 
-    # Create the Order first
-    order = Order(
-        customer_name=data.customer_name,
-        customer_email=data.customer_email,
-        customer_phone=data.customer_phone,
-        status="Pending",
-        total_price=0
-    )
-
-    session.add(order)
-    session.flush()          # Generates order.id without committing
-
-    # Loop through every product in the cart
     for item in data.items:
+
+        if item.quantity <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Quantity must be greater than zero."
+            )
 
         product = session.query(Product).filter(
             Product.id == item.product_id
         ).first()
 
         if product is None:
-            session.rollback()
-            return {
-                "message": f"Product with id {item.product_id} not found."
-            }
+            raise HTTPException(
+                status_code=404,
+                detail=f"Product with id {item.product_id} not found."
+            )
 
-        # Calculate subtotal
+        if product.base_price is None:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Product '{product.name}' has no price."
+            )
+
+        products[item.product_id] = product
+
+        # IMPORTANT:
+        # Price comes from our database,
+        # NOT from the frontend.
         subtotal = product.base_price * item.quantity
 
         total_price += subtotal
 
-        # Create Order Item
+    # -----------------------------
+    # CREATE ORDER
+    # -----------------------------
+
+    order = Order(
+        customer_name=data.customer_name,
+        customer_email=data.customer_email,
+        customer_phone=data.customer_phone,
+        status="Pending",
+        total_price=total_price
+    )
+
+    session.add(order)
+    session.flush()
+
+    # -----------------------------
+    # CREATE ORDER ITEMS
+    # -----------------------------
+
+    for item in data.items:
+
+        product = products[item.product_id]
+
         order_item = OrderItem(
             order_id=order.id,
             product_id=product.id,
@@ -82,9 +126,12 @@ def checkout(data: CheckoutSchema, session=Depends(get_db)):
         )
 
         session.add(order_item)
-        session.flush()      # Generates order_item.id
+        session.flush()
 
-        # Save all customer answers
+        # -----------------------------
+        # SAVE CUSTOM VALUES
+        # -----------------------------
+
         for field in item.fields:
 
             answer = OrderItemFieldValue(
@@ -95,15 +142,31 @@ def checkout(data: CheckoutSchema, session=Depends(get_db)):
 
             session.add(answer)
 
-    # Update order total
-    order.total_price = total_price
+    # -----------------------------
+    # COMMIT EVERYTHING
+    # -----------------------------
 
-    session.commit()
+    try:
+        session.commit()
+
+    except Exception:
+        session.rollback()
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not create order."
+        )
 
     session.refresh(order)
 
+    # -----------------------------
+    # RETURN ORDER INFORMATION
+    # -----------------------------
+
     return {
-        "message": "Order placed successfully.",
+        "message": "Order created successfully.",
         "order_id": order.id,
-        "total_price": order.total_price
+        "total_price": order.total_price,
+        "status": order.status
     }
+

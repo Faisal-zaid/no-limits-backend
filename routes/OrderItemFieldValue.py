@@ -275,3 +275,16 @@ async def upload_order_item_image(
         "value_id": new_value.id
     }    
 
+@router.post("/upload-custom-image") 
+def upload_custom_image( image: UploadFile = File(...), 
+                        session=Depends(get_db) ): 
+     if not image.content_type: 
+         raise HTTPException( status_code=400, detail="Invalid image." ) 
+     if not image.content_type.startswith("image/"): 
+        raise HTTPException( status_code=400, detail="Only image files are allowed." )
+     try: 
+            result = cloudinary.uploader.upload( image.file, folder="no-limits/custom-images" ) 
+            return { "message": "Custom image uploaded successfully.", "image_url": result["secure_url"] } 
+     except Exception as error: print( "CUSTOM IMAGE UPLOAD ERROR:", error ) 
+     raise HTTPException( status_code=500, detail="Failed to upload custom image." )
+

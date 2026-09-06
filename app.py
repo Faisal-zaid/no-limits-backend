@@ -41,13 +41,27 @@ REDIS_URL = os.getenv("REDIS_URL")
 
 @app.on_event("startup")
 async def startup():
-    redis_connection = redis.from_url(
-        REDIS_URL,
-        encoding="utf-8",
-        decode_responses=True
-    )
+    # 1. Automatic Seeding on Startup
+    try:
+        seed_database()
+        logging.info("Database successfully checked/seeded.")
+    except Exception as e:
+        logging.error(f"Seeding failed: {e}")
 
-    await FastAPILimiter.init(redis_connection) #initializes redis to work with rate limiter
+    # 2. Redis Connection Handling
+    if REDIS_URL:
+        try:
+            redis_connection = redis.from_url(
+                REDIS_URL,
+                encoding="utf-8",
+                decode_responses=True
+            )
+            await FastAPILimiter.init(redis_connection)
+            logging.info("Redis initialized successfully.")
+        except Exception as e:
+            logging.error(f"Failed to connect to Redis: {e}")
+    else:
+        logging.warning("REDIS_URL not set. Rate limiter disabled.") #initializes redis to work with rate limiter
 
 #acts as blueprint for the route
 app.include_router(auth_router)

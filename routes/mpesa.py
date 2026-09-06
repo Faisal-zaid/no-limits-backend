@@ -5,8 +5,10 @@ import requests
 from datetime import datetime
 
 import httpx
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from dotenv import load_dotenv
+from pydantic import BaseModel
+from models import get_db,Order
 
 load_dotenv()
 

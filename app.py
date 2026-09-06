@@ -78,7 +78,7 @@ app.include_router(mpesa_router)
 app.include_router(mpesa_callback_router)
 
 #allow access from all servers
-app.add_middleware(CORSMiddleware,  allow_origins=["http://localhost:3000",],allow_credentials=True,allow_headers=["*"],allow_methods=["*"])
+app.add_middleware(CORSMiddleware,  allow_origins=["http://localhost:3000","https://no-limit-frontend.vercel.app/",],allow_credentials=True,allow_headers=["*"],allow_methods=["*"])
 
 
 

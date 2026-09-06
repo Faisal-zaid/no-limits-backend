@@ -16,9 +16,8 @@ from models import (
 router = APIRouter()
 
 
-# =====================================================
+
 # SCHEMAS
-# =====================================================
 
 class FieldValueSchema(BaseModel):
     product_field_id: int

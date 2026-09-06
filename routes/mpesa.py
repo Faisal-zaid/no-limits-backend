@@ -36,6 +36,11 @@ else:
      MPESA_BASE_URL = (
           "https://sandbox.safaricom.co.ke" )
 
+     #request schema
+class STKPushRequest(BaseModel):
+     order_id: int
+     phone_number: str
+
 #get mpesa access token
 async def get_mpesa_access_token():
 

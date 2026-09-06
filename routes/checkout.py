@@ -119,9 +119,18 @@ def checkout(
 
             # STOCK CHECK
 
-            if product.stock < requested_quantity:
-
+            available_stock = product.stock - product.reserved_stock
+            if available_stock < requested_quantity:
                 raise HTTPException(
+                 status_code=400,
+                 detail=(
+                   f"Not enough stock for {product.name}. "
+                   f"Available: {available_stock}, "
+                   f"requested: {requested_quantity}."
+                  )
+                 )
+
+            raise HTTPException(
                     status_code=400,
                     detail=(
                         f"Not enough stock for "

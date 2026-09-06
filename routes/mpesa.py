@@ -41,6 +41,26 @@ class STKPushRequest(BaseModel):
      order_id: int
      phone_number: str
 
+#normalize phone numbers
+
+def normalize_phone_number(
+         phone_number: str ):
+    phone = phone_number.strip()
+     # 0712345678 
+    if phone.startswith("0"):
+        phone = ( "254" + phone[1:] )
+         # +254712345678 
+    elif phone.startswith("+254"):
+        phone = phone[1:]
+         # 254712345678 
+    elif phone.startswith("254"):
+        pass 
+    else: 
+        raise HTTPException( status_code=400, detail=( "Invalid Kenyan phone number." ) ) 
+    if ( len(phone) != 12 or not phone.isdigit() or not phone.startswith("254") ):
+     raise HTTPException( status_code=400, detail=( "Invalid Kenyan phone number." ) ) 
+    return phone
+
 #get mpesa access token
 async def get_mpesa_access_token():
 

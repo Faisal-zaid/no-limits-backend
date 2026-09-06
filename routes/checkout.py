@@ -130,7 +130,7 @@ def checkout(
                   )
                  )
 
-            raise HTTPException(
+                raise HTTPException(
                     status_code=400,
                     detail=(
                         f"Not enough stock for "
@@ -259,7 +259,7 @@ def checkout(
 
             # DEDUCT STOCK
 
-            product.stock -= item.quantity
+            product.reserved_stock += item.quantity
 
         # COMMIT EVERYTHING
 

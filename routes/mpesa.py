@@ -236,6 +236,9 @@ def initiate_stk_push(
     data: STKPushRequest,
     session=Depends(get_db)
 ):
+    logger.info("========== STK PUSH START ==========")
+    logger.info("Order ID: %s", data.order_id)
+    logger.info("Phone received: %s", data.phone_number)
 
     # =================================================
     # FIND ORDER
@@ -243,25 +246,30 @@ def initiate_stk_push(
 
     order = (
         session.query(Order)
-        .filter(
-            Order.id == data.order_id
-        )
+        .filter(Order.id == data.order_id)
         .first()
     )
 
     if not order:
+        logger.error("Order %s not found", data.order_id)
 
         raise HTTPException(
             status_code=404,
             detail="Order not found."
         )
 
+    logger.info(
+        "Order found: id=%s amount=%s payment_status=%s",
+        order.id,
+        order.total_price,
+        order.payment_status
+    )
+
     # =================================================
     # CHECK PAYMENT STATUS
     # =================================================
 
     if order.payment_status == "Paid":
-
         raise HTTPException(
             status_code=400,
             detail="This order has already been paid."
@@ -271,15 +279,13 @@ def initiate_stk_push(
     # CHECK AMOUNT
     # =================================================
 
-    if not order.total_price:
-
+    if order.total_price is None:
         raise HTTPException(
             status_code=400,
             detail="Order has no valid total."
         )
 
     if order.total_price <= 0:
-
         raise HTTPException(
             status_code=400,
             detail="Order amount must be greater than zero."
@@ -289,8 +295,27 @@ def initiate_stk_push(
     # NORMALIZE PHONE
     # =================================================
 
-    phone_number = normalize_phone_number(
-        data.phone_number
+    try:
+        phone_number = normalize_phone_number(
+            data.phone_number
+        )
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+        logger.exception(
+            "Phone normalization error"
+        )
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid phone number."
+        )
+
+    logger.info(
+        "Normalized phone: %s",
+        phone_number
     )
 
     # =================================================
@@ -298,72 +323,94 @@ def initiate_stk_push(
     # =================================================
 
     try:
+        logger.info("Requesting M-Pesa access token...")
 
-        access_token = (
-            get_mpesa_access_token()
+        access_token = get_mpesa_access_token()
+
+        logger.info(
+            "M-Pesa access token obtained successfully."
         )
 
     except Exception as error:
-
-        logger.error(
-            "M-Pesa authentication error: %s",
-            error
+        logger.exception(
+            "M-Pesa authentication error"
         )
 
         raise HTTPException(
             status_code=500,
-            detail=(
-                "Could not connect to M-Pesa."
-            )
+            detail="Could not connect to M-Pesa."
         )
 
     # =================================================
     # GENERATE PASSWORD
     # =================================================
 
-    password, timestamp = (
-        generate_password()
-    )
+    try:
+        password, timestamp = generate_password()
+
+    except Exception:
+        logger.exception(
+            "Could not generate M-Pesa password."
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not prepare M-Pesa payment."
+        )
+
+    # =================================================
+    # VALIDATE REQUIRED ENVIRONMENT VARIABLES
+    # =================================================
+
+    missing_variables = []
+
+    if not MPESA_SHORTCODE:
+        missing_variables.append("MPESA_SHORTCODE")
+
+    if not MPESA_PASSKEY:
+        missing_variables.append("MPESA_PASSKEY")
+
+    if not MPESA_CALLBACK_URL:
+        missing_variables.append("MPESA_CALLBACK_URL")
+
+    if missing_variables:
+        logger.error(
+            "Missing M-Pesa environment variables: %s",
+            missing_variables
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="M-Pesa configuration is incomplete."
+        )
 
     # =================================================
     # STK PUSH PAYLOAD
     # =================================================
 
     payload = {
-
-        "BusinessShortCode":
-            MPESA_SHORTCODE,
-
-        "Password":
-            password,
-
-        "Timestamp":
-            timestamp,
-
-        "TransactionType":
-            "CustomerPayBillOnline",
-
-        "Amount":
-            int(order.total_price),
-
-        "PartyA":
-            phone_number,
-
-        "PartyB":
-            MPESA_SHORTCODE,
-
-        "PhoneNumber":
-            phone_number,
-
-        "CallBackURL":
-            MPESA_CALLBACK_URL,
-
-        "AccountReference":
-            f"ORDER-{order.id}",
-
-        "TransactionDesc":
-            f"Payment for order {order.id}"
+        "BusinessShortCode": MPESA_SHORTCODE,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": int(order.total_price),
+        "PartyA": phone_number,
+        "PartyB": MPESA_SHORTCODE,
+        "PhoneNumber": phone_number,
+        "CallBackURL": MPESA_CALLBACK_URL,
+        "AccountReference": f"ORDER-{order.id}",
+        "TransactionDesc": f"Payment for order {order.id}"
     }
+
+    logger.info(
+        "Sending STK push for order %s",
+        order.id
+    )
+
+    logger.info(
+        "STK callback URL: %s",
+        MPESA_CALLBACK_URL
+    )
 
     # =================================================
     # SEND STK PUSH
@@ -372,35 +419,33 @@ def initiate_stk_push(
     try:
 
         response = requests.post(
-
-            f"{MPESA_BASE_URL}"
-            "/mpesa/stkpush/v1/processrequest",
-
+            f"{MPESA_BASE_URL}/mpesa/stkpush/v1/processrequest",
             json=payload,
-
             headers={
-                "Authorization":
-                    f"Bearer {access_token}",
-
-                "Content-Type":
-                    "application/json"
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json"
             },
-
             timeout=30
         )
 
-    except requests.RequestException as error:
+        logger.info(
+            "M-Pesa HTTP status: %s",
+            response.status_code
+        )
 
-        logger.error(
-            "M-Pesa STK request error: %s",
-            error
+        logger.info(
+            "M-Pesa raw response: %s",
+            response.text
+        )
+
+    except requests.RequestException:
+        logger.exception(
+            "M-Pesa STK HTTP request failed."
         )
 
         raise HTTPException(
-            status_code=500,
-            detail=(
-                "Could not connect to M-Pesa."
-            )
+            status_code=502,
+            detail="Could not connect to M-Pesa."
         )
 
     # =================================================
@@ -408,24 +453,22 @@ def initiate_stk_push(
     # =================================================
 
     try:
-
-        response_data = (
-            response.json()
-        )
+        response_data = response.json()
 
     except Exception:
-
-        logger.error(
-            "Invalid M-Pesa response: %s",
-            response.text
+        logger.exception(
+            "M-Pesa returned invalid JSON."
         )
 
         raise HTTPException(
-            status_code=500,
-            detail=(
-                "Invalid response from M-Pesa."
-            )
+            status_code=502,
+            detail="Invalid response from M-Pesa."
         )
+
+    logger.info(
+        "M-Pesa parsed response: %s",
+        response_data
+    )
 
     # =================================================
     # CHECK RESPONSE
@@ -440,63 +483,116 @@ def initiate_stk_push(
 
         raise HTTPException(
             status_code=400,
-            detail=(
-                response_data.get(
-                    "errorMessage",
-                    "M-Pesa payment request failed."
-                )
+            detail=response_data.get(
+                "errorMessage",
+                "M-Pesa payment request failed."
             )
+        )
+
+    response_code = response_data.get(
+        "ResponseCode"
+    )
+
+    checkout_request_id = response_data.get(
+        "CheckoutRequestID"
+    )
+
+    merchant_request_id = response_data.get(
+        "MerchantRequestID"
+    )
+
+    # =================================================
+    # MAKE SURE M-PESA ACTUALLY ACCEPTED REQUEST
+    # =================================================
+
+    if response_code != "0":
+        logger.error(
+            "M-Pesa rejected STK request: %s",
+            response_data
+        )
+
+        raise HTTPException(
+            status_code=400,
+            detail=response_data.get(
+                "ResponseDescription",
+                "M-Pesa rejected the payment request."
+            )
+        )
+
+    if not checkout_request_id:
+
+        logger.error(
+            "M-Pesa did not return CheckoutRequestID: %s",
+            response_data
+        )
+
+        raise HTTPException(
+            status_code=502,
+            detail="M-Pesa did not return a CheckoutRequestID."
         )
 
     # =================================================
     # SAVE REQUEST IDS
     # =================================================
 
-    order.checkout_request_id = (
-        response_data.get(
-            "CheckoutRequestID"
+    try:
+
+        order.checkout_request_id = (
+            checkout_request_id
         )
-    )
 
-    order.merchant_request_id = (
-        response_data.get(
-            "MerchantRequestID"
+        order.merchant_request_id = (
+            merchant_request_id
         )
-    )
 
-    order.payment_status = "Pending"
+        order.payment_status = "Pending"
 
-    session.commit()
+        session.commit()
+
+        logger.info(
+            "Saved M-Pesa request IDs for order %s",
+            order.id
+        )
+
+    except Exception:
+
+        session.rollback()
+
+        logger.exception(
+            "Database error while saving M-Pesa request IDs."
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save payment information."
+        )
 
     # =================================================
     # RETURN RESPONSE
     # =================================================
 
-    return {
-
-        "message":
-            response_data.get(
-                "CustomerMessage",
-                "STK Push sent successfully."
-            ),
-
-        "merchant_request_id":
-            response_data.get(
-                "MerchantRequestID"
-            ),
-
-        "checkout_request_id":
-            response_data.get(
-                "CheckoutRequestID"
-            ),
-
-        "response_code":
-            response_data.get(
-                "ResponseCode"
-            )
+    result = {
+        "success": True,
+        "message": response_data.get(
+            "CustomerMessage",
+            "STK Push sent successfully."
+        ),
+        "order_id": order.id,
+        "merchant_request_id": merchant_request_id,
+        "checkout_request_id": checkout_request_id,
+        "response_code": response_code
     }
 
+    logger.info(
+        "========== STK PUSH RETURNING =========="
+    )
 
+    logger.info(
+        "Response to frontend: %s",
+        result
+    )
+
+    return result
 
 @router.get("/mpesa/payment-status/{order_id}")
 def get_payment_status(

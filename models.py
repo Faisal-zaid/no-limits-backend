@@ -50,6 +50,7 @@ class Product(Base):# stores the services or products under a category
     description=Column(Text)
     base_price=Column(Integer)
     stock=Column(Integer, default=0, nullable=False)
+    reserved_stock = Column(Integer, default=0, nullable=False)
     image=Column(String)
 
     category=relationship("Category", back_populates="products")

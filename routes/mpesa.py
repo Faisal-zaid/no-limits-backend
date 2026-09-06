@@ -16,7 +16,7 @@ load_dotenv()
 
 router = APIRouter()
 
-logger=logging.getLogger(__name__)
+logger=logging.getLogger(__name__)  #creates logs for whats happening in your app
 
 MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
 MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
@@ -26,6 +26,15 @@ MPESA_CALLBACK_URL = os.getenv("MPESA_CALLBACK_URL")
 
 MPESA_BASE_URL = "https://sandbox.safaricom.co.ke"
 
+#base url for mpesa
+
+if MPESA_ENVIRONMENT == "production":
+     MPESA_BASE_URL = ( 
+         "https://api.safaricom.co.ke" 
+         ) 
+else: 
+     MPESA_BASE_URL = (
+          "https://sandbox.safaricom.co.ke" )
 
 #get mpesa access token
 async def get_mpesa_access_token():

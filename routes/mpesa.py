@@ -10,9 +10,13 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from models import get_db,Order
 
+import logging
+
 load_dotenv()
 
 router = APIRouter()
+
+logger=logging.getLogger(__name__)
 
 MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
 MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")

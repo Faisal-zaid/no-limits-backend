@@ -64,6 +64,12 @@ def normalize_phone_number(
 #get mpesa access token
 async def get_mpesa_access_token():
 
+    if not MPESA_CONSUMER_KEY:
+        raise Exception(
+             "MPESA_CONSUMER_KEY is not configured." ) 
+    if not MPESA_CONSUMER_SECRET:
+        raise Exception( "MPESA_CONSUMER_SECRET is not configured." )
+
     credentials = (
         f"{MPESA_CONSUMER_KEY}:{MPESA_CONSUMER_SECRET}"
     )

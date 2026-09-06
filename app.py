@@ -27,6 +27,7 @@ from routes.checkout import router as checkout_router
 from routes.OrderItem import router as orderitem_router
 from routes.OrderItemFieldValue import router as orderitemfieldvalue_router
 from routes.mpesa import router as mpesa_router
+from routes.mpesa_callback import router as mpesa_callback_router
 
 
 
@@ -59,6 +60,7 @@ app.include_router(checkout_router)
 app.include_router(orderitem_router)
 app.include_router(orderitemfieldvalue_router)
 app.include_router(mpesa_router)
+app.include_router(mpesa_callback_router)
 
 #allow access from all servers
 app.add_middleware(CORSMiddleware,  allow_origins=["http://localhost:3000",],allow_credentials=True,allow_headers=["*"],allow_methods=["*"])

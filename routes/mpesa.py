@@ -496,3 +496,30 @@ def initiate_stk_push(
             )
     }
 
+
+
+@router.get("/mpesa/payment-status/{order_id}")
+def get_payment_status(
+    order_id: int,
+    session=Depends(get_db)
+):
+    order = (
+        session.query(Order)
+        .filter(Order.id == order_id)
+        .first()
+    )
+
+    if not order:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found."
+        )
+
+    return {
+        "order_id": order.id,
+        "payment_status": order.payment_status,
+        "order_status": order.status,
+        "mpesa_receipt_number": order.mpesa_receipt_number
+    }
+
+

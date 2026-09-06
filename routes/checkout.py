@@ -39,9 +39,7 @@ class CheckoutSchema(BaseModel):
     items: List[CheckoutItemSchema]
 
 
-# =====================================================
 # CHECKOUT
-# =====================================================
 
 @router.post("/checkout")
 def checkout(
@@ -49,9 +47,7 @@ def checkout(
     session=Depends(get_db)
 ):
 
-    # =================================================
     # BASIC VALIDATION
-    # =================================================
 
     if not data.items:
         raise HTTPException(
@@ -59,12 +55,10 @@ def checkout(
             detail="Your cart is empty."
         )
 
-    # =================================================
     # AGGREGATE QUANTITIES
     #
     # This protects us if the same product somehow
     # appears multiple times in the cart.
-    # =================================================
 
     requested_quantities = {}
 
@@ -84,13 +78,11 @@ def checkout(
             + item.quantity
         )
 
-    # =================================================
     # LOAD PRODUCTS WITH ROW LOCKS
     #
     # with_for_update() prevents two customers from
     # purchasing the same remaining stock at the same
     # time.
-    # =================================================
 
     products = {}
 
@@ -125,9 +117,7 @@ def checkout(
                 ]
             )
 
-            # =========================================
             # STOCK CHECK
-            # =========================================
 
             if product.stock < requested_quantity:
 
@@ -142,9 +132,7 @@ def checkout(
                     )
                 )
 
-            # =========================================
             # PRICE CHECK
-            # =========================================
 
             if product.base_price is None:
 
@@ -158,9 +146,7 @@ def checkout(
 
             products[product_id] = product
 
-        # =================================================
         # CALCULATE TOTAL FROM DATABASE
-        # =================================================
 
         total_price = 0
 
@@ -175,9 +161,7 @@ def checkout(
                 * item.quantity
             )
 
-        # =================================================
         # CREATE ORDER
-        # =================================================
 
         order = Order(
             customer_name=data.customer_name.strip(),
@@ -192,9 +176,7 @@ def checkout(
         # Get order.id before creating OrderItems
         session.flush()
 
-        # =================================================
         # CREATE ORDER ITEMS
-        # =================================================
 
         for item in data.items:
 
@@ -213,9 +195,7 @@ def checkout(
             # Get order_item.id
             session.flush()
 
-            # =============================================
             # VALIDATE AND SAVE CUSTOM FIELDS
-            # =============================================
 
             for field in item.fields:
 
@@ -239,9 +219,7 @@ def checkout(
                         )
                     )
 
-                # =========================================
                 # MAKE SURE FIELD BELONGS TO PRODUCT
-                # =========================================
 
                 if (
                     product_field.product_id
@@ -258,9 +236,7 @@ def checkout(
                         )
                     )
 
-                # =========================================
                 # SAVE FIELD VALUE
-                # =========================================
 
                 field_value = OrderItemFieldValue(
                     order_item_id=order_item.id,
@@ -272,15 +248,11 @@ def checkout(
 
                 session.add(field_value)
 
-            # =============================================
             # DEDUCT STOCK
-            # =============================================
 
             product.stock -= item.quantity
 
-        # =================================================
         # COMMIT EVERYTHING
-        # =================================================
 
         session.commit()
 

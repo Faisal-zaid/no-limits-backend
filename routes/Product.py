@@ -68,7 +68,7 @@ def create_product(name:str=Form(...),
 @router.get("/product")
 def get_products(
     q: Optional[str] = Query(default=None),
-    category_id: int | None = Query(default=None),
+    category_id: Optional[int] = Query(default=None),
     session=Depends(get_db)
 ):
     query = session.query(Product)

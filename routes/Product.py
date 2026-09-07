@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends #the APIRouter allows us to use routes easily than relying everything in app.py
+from fastapi import APIRouter, Depends, Query #the APIRouter allows us to use routes easily than relying everything in app.py
 from models import Product, get_db
 from pydantic import BaseModel
 import cloudinary_config

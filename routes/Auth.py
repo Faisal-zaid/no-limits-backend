@@ -130,7 +130,7 @@ async def get_current_user(request: Request,
     return user
 
 #a protected endpoint
-@router.get("/users/me", dependencies=[strict_limit])
+@router.get("/users/me", dependencies=[low_limit])
 async def read_users_me(current_user:Annotated[User,
                                                Depends(get_current_user)]):
     #this code only runs if token was valid
@@ -156,7 +156,7 @@ allow_any_user=RoleChecker(["admin","customer"])
 
 #endpoint for promoting a user to admin
 
-@router.post("/admin/users/{username}/promote",dependencies=[strict_limit])
+@router.post("/admin/users/{username}/promote",dependencies=[moderate_limit])
 async def promote_user_to_admin(
     username: str,
     current_user: Annotated[User, Depends(allow_admin)],
@@ -193,7 +193,7 @@ async def promote_user_to_admin(
     }
 
 #endpoints with authorization
-@router.get('/dashboard',dependencies=[strict_limit])
+@router.get('/dashboard',dependencies=[low_limit])
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
     return {
     "message": f"welcome to your dashboard,{current_user.username}!"

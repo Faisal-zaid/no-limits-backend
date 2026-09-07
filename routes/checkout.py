@@ -3,6 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from typing import List
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 from models import (
     get_db,
     Product,

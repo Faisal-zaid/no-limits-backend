@@ -5,6 +5,8 @@ import requests
 
 from datetime import datetime
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 from fastapi import (
     APIRouter,
     Depends,

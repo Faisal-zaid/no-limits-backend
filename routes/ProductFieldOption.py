@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends #the APIRouter allows us to use routes ea
 from models import ProductFieldOption, get_db
 from pydantic import BaseModel
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 router=APIRouter()
 
 #for validation of product field option i will do 

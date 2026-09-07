@@ -6,6 +6,8 @@ from fastapi import UploadFile,File,Form
 import cloudinary.uploader
 from typing import Optional #adding this so i can use "|"  operand
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 router=APIRouter()
 
 #for validation of product i will do 

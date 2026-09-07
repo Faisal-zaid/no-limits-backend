@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 from models import get_db, Order
 
 import logging

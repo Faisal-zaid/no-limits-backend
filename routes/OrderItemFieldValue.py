@@ -4,6 +4,8 @@ from pydantic import BaseModel
 import cloudinary.uploader
 import cloudinary_config
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 
 
 router = APIRouter()

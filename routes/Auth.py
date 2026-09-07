@@ -11,6 +11,8 @@ from jose import jwt ,JWTError
 from passlib.context import CryptContext  
 from typing import List
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 from fastapi.responses import JSONResponse  #FastAPI puts the JWT into an HttpOnly cookie.
 
 

@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 from models import OrderItem, get_db
 from pydantic import BaseModel
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 router = APIRouter()
 
 #validation

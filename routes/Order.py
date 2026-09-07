@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends,HTTPException #the APIRouter allows us to
 from models import Order, get_db
 from pydantic import BaseModel
 
+from rate_limit import strict_limit, moderate_limit, low_limit
+
 router=APIRouter()
 
 #for validation of Order i will do 

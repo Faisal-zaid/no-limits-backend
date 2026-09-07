@@ -66,10 +66,20 @@ def create_product(name:str=Form(...),
 
 #retrieve all products
 @router.get("/product")
-def get_products(session=Depends(get_db)):
+def get_products(
+    q: str | None = Query(default=None),session=Depends(get_db)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive categories
-    products=session.query(Product).all()
+    query = session.query(Product)
+
+    if q and q.strip():
+        search = f"%{q.strip()}%"
+
+        query = query.filter(
+            Product.name.ilike(search)
+        )
+
+    products = query.all()
     return products
 
 #retrieve a single product

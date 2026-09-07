@@ -54,7 +54,7 @@ class RegisterSchema(BaseModel):
     
 
 #the login route
-@router.post("/token")
+@router.post("/token",dependencies=[strict_limit])
 async def login(response: Response,form_data:Annotated[OAuth2PasswordRequestForm,Depends()],
                 db: Annotated[Session, Depends(get_db)]):
      user = db.query(User).filter(
@@ -130,7 +130,7 @@ async def get_current_user(request: Request,
     return user
 
 #a protected endpoint
-@router.get("/users/me")
+@router.get("/users/me", dependencies=[strict_limit])
 async def read_users_me(current_user:Annotated[User,
                                                Depends(get_current_user)]):
     #this code only runs if token was valid
@@ -156,7 +156,7 @@ allow_any_user=RoleChecker(["admin","customer"])
 
 #endpoint for promoting a user to admin
 
-@router.post("/admin/users/{username}/promote")
+@router.post("/admin/users/{username}/promote",dependencies=[strict_limit])
 async def promote_user_to_admin(
     username: str,
     current_user: Annotated[User, Depends(allow_admin)],
@@ -193,7 +193,7 @@ async def promote_user_to_admin(
     }
 
 #endpoints with authorization
-@router.get('/dashboard')
+@router.get('/dashboard',dependencies=[strict_limit])
 async def view_dashboard(current_user:Annotated[dict,Depends(allow_any_user)]):
     return {
     "message": f"welcome to your dashboard,{current_user.username}!"
@@ -209,7 +209,7 @@ async def logout(response: Response):
     return {"message": "logged out successfully"}
 
 
-@router.post("/register")
+@router.post("/register",dependencies=[strict_limit])
 async def register(
     user_data: RegisterSchema,
     db: Annotated[Session, Depends(get_db)]

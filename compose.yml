@@ -2,4 +2,6 @@ services:
   demo-server:
     image: python:3.12-slim
     command: python -m http.server 8000
-    
+
+  another-server:
+    image: python:3.12-slim  

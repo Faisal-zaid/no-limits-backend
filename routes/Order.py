@@ -80,6 +80,22 @@ def get_order_history(session=Depends(get_db),current_user: User = Depends(get_c
 
     return orders
 
+#customers end point 
+
+@router.get("/my-orders")
+def get_my_orders(
+    session=Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    orders = (
+        session.query(Order)
+        .filter(Order.user_id == current_user.id)
+        .order_by(Order.created_at.desc())
+        .all()
+    )
+
+    return orders
+
 #retrieve a single order
 @router.get("/order/{order_id}")#never forget the parameters inside
 def get_order(order_id, session=Depends(get_db)):

@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from typing import List
 
 from rate_limit import strict_limit, moderate_limit, low_limit
+from routes.Auth import get_current_user
 
 from models import (
     get_db,
@@ -11,7 +12,8 @@ from models import (
     ProductField,
     Order,
     OrderItem,
-    OrderItemFieldValue
+    OrderItemFieldValue,
+    User
 )
 
 

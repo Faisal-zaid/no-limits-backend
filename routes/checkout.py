@@ -175,6 +175,7 @@ def checkout(
         # CREATE ORDER
 
         order = Order(
+            user_id=current_user.id,
             customer_name=data.customer_name.strip(),
             customer_email=data.customer_email.strip(),
             customer_phone=data.customer_phone.strip(),

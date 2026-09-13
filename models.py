@@ -88,9 +88,12 @@ class ProductFieldOption(Base):#some field types will be dropdowns so here is wh
     field=relationship("ProductField", back_populates="options") 
 
 class Order(Base): #stores sinformation about a customers order
-    __tablename__="orders"       
+    __tablename__="orders"   
+    
 
     id=Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+
     customer_name=Column(String)
     customer_email=Column(String)
     customer_phone=Column(String)
@@ -103,7 +106,7 @@ class Order(Base): #stores sinformation about a customers order
     merchant_request_id=Column(String, nullable=True)
     mpesa_receipt_number=Column(String, nullable=True)
 
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
     user = relationship("User", back_populates="orders")
 
     items=relationship(

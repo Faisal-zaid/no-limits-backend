@@ -237,6 +237,12 @@ async def register(
             detail="Email already exists"
         )
 
+    if user_data.password != user_data.confirm_password:
+        raise HTTPException(
+        status_code=400,
+        detail="Passwords do not match"
+    )
+
     # Hash the password before storing it
     hashed_password = pwd_context.hash(user_data.password)
 

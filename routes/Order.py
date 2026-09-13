@@ -157,8 +157,16 @@ def delete_order(order_id,session=Depends(get_db)):
 def update_order_status(
     order_id: int,
     data: OrderStatusSchema,
-    session=Depends(get_db)
+    session=Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
+
+    if current_user.role != "admin":
+        raise HTTPException(
+        status_code=403,
+        detail="Admin access required"
+    )
+
     order = session.query(Order).filter(
         Order.id == order_id
     ).first()

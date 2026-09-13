@@ -66,9 +66,15 @@ def get_orders(session=Depends(get_db)):
 @router.get("/order/history")
 def get_order_history(session=Depends(get_db),current_user: User = Depends(get_current_user)):
 
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
     orders = (
         session.query(Order)
-        .filter(Order.user_id == current_user.id,Order.status.in_(["Completed", "Cancelled"]))
+        .filter(Order.status.in_(["Completed", "Cancelled"]))
         .all()
     )
 

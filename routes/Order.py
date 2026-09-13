@@ -52,9 +52,16 @@ def create_order(order:OrderSchema, session=Depends(get_db)):
 
 #retrieve all orders. Admin can view all orders from all customers
 @router.get("/order")
-def get_orders(session=Depends(get_db)):
+def get_orders(session=Depends(get_db),current_user: User = Depends(get_current_user)):
     #here i will use sqlalchemy to retrieve all products
     #code to retrive categories
+
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
     orders = (
         session.query(Order)
         .filter(Order.status.in_(["Pending", "Processing"]))

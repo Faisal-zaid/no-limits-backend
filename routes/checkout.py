@@ -48,7 +48,8 @@ class CheckoutSchema(BaseModel):
 @router.post("/checkout")
 def checkout(
     data: CheckoutSchema,
-    session=Depends(get_db)
+    session=Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
 
     # BASIC VALIDATION

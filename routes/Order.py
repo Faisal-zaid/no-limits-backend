@@ -111,7 +111,13 @@ def get_order(order_id, session=Depends(get_db)):
 
 #update a single order. Admin can update status of the order 
 @router.patch("/order/{order_id}")
-def update_order(order_id, data:OrderSchema, session=Depends(get_db)):
+def update_order(order_id, data:OrderSchema, session=Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
     order=session.query(Order).filter(Order.id==order_id).first()
 
     if not order:

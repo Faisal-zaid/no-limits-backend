@@ -103,6 +103,9 @@ class Order(Base): #stores sinformation about a customers order
     merchant_request_id=Column(String, nullable=True)
     mpesa_receipt_number=Column(String, nullable=True)
 
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    user = relationship("User", back_populates="orders")
+
     items=relationship(
         "OrderItem",
         back_populates="order",
@@ -144,3 +147,5 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     role = Column(String, default="customer", nullable=False)
+
+    orders = relationship("Order", back_populates="user")

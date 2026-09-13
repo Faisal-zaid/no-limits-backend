@@ -64,11 +64,11 @@ def get_orders(session=Depends(get_db)):
     return orders
 
 @router.get("/order/history")
-def get_order_history(session=Depends(get_db)):
+def get_order_history(session=Depends(get_db),current_user: User = Depends(get_current_user)):
 
     orders = (
         session.query(Order)
-        .filter(Order.status.in_(["Completed", "Cancelled"]))
+        .filter(Order.user_id == current_user.id,Order.status.in_(["Completed", "Cancelled"]))
         .all()
     )
 

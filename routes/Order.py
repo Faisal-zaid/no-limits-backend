@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends,HTTPException #the APIRouter allows us to use routes easily than relying everything in app.py
-from models import Order, get_db
+from models import Order, get_db, User
 from pydantic import BaseModel
+from routes.Auth import get_current_user
 
 from rate_limit import strict_limit, moderate_limit, low_limit
 

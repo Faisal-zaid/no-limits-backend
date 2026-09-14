@@ -75,3 +75,15 @@ with engine.connect() as connection:
             print(f"{name}: EXISTS")
         else:
             print(f"{name}: MISSING")
+
+with engine.connect() as connection:
+    result = connection.execute(
+        text("SELECT version_num FROM alembic_version")
+    )
+
+    row = result.fetchone()
+
+    if row:
+        print(f"Alembic current revision: {row[0]}")
+    else:
+        print("Alembic version table is empty")            

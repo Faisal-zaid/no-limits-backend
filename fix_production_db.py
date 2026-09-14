@@ -8,34 +8,70 @@ if not database_url:
 
 engine = create_engine(database_url)
 
-with engine.begin() as connection:
+checks = {
+    "categories.subheading": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'categories'
+        AND column_name = 'subheading'
+    """,
 
-    # Check whether user_id already exists
-    result = connection.execute(text("""
-        SELECT column_name
+    "orders.payment_status": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'orders'
+        AND column_name = 'payment_status'
+    """,
+
+    "orders.checkout_request_id": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'orders'
+        AND column_name = 'checkout_request_id'
+    """,
+
+    "orders.merchant_request_id": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'orders'
+        AND column_name = 'merchant_request_id'
+    """,
+
+    "orders.mpesa_receipt_number": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'orders'
+        AND column_name = 'mpesa_receipt_number'
+    """,
+
+    "products.stock": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'products'
+        AND column_name = 'stock'
+    """,
+
+    "products.reserved_stock": """
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'products'
+        AND column_name = 'reserved_stock'
+    """,
+
+    "orders.user_id": """
+        SELECT 1
         FROM information_schema.columns
         WHERE table_name = 'orders'
         AND column_name = 'user_id'
-    """))
+    """
+}
 
-    user_id_exists = result.fetchone()
+with engine.connect() as connection:
 
-    if not user_id_exists:
-        print("Adding user_id column to orders...")
+    for name, query in checks.items():
+        result = connection.execute(text(query))
 
-        connection.execute(text("""
-            ALTER TABLE orders
-            ADD COLUMN user_id INTEGER
-        """))
-
-        connection.execute(text("""
-            ALTER TABLE orders
-            ADD CONSTRAINT fk_orders_user_id
-            FOREIGN KEY (user_id)
-            REFERENCES users(id)
-        """))
-
-        print("user_id added successfully.")
-
-    else:
-        print("user_id already exists. Nothing to do.")
+        if result.fetchone():
+            print(f"{name}: EXISTS")
+        else:
+            print(f"{name}: MISSING")

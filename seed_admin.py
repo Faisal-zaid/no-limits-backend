@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from passlib.context import CryptContext
 from models import User, Session
-from database import engine, Base  # Adjust import paths to match your project
+from models import engine, Base  # Adjust import paths to match your project
 
 def create_admin():
     # Force creation of missing columns/tables if they don't exist

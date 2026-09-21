@@ -32,7 +32,7 @@ from routes.mpesa_callback import router as mpesa_callback_router
 
 
 
-Base.metadata.create_all(bind=engine)  #this line creates a missing table suppose the backend is in production
+# Base.metadata.create_all(bind=engine)  #this line creates a missing table suppose the backend is in production
 
 
 #create an instance

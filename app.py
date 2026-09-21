@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import logging
+from seed import seed_database
 #import fastapi class
 
 from fastapi import FastAPI, Depends, Request,HTTPException,status # Depnds is added so records are persisted to the database
